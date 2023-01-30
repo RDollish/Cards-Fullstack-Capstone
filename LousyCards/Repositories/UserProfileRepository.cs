@@ -60,7 +60,7 @@ namespace LousyCards.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-               SELECT u.id, u.DisplayName, u.Email,
+               SELECT u.id, u.FirebaseUserId, u.DisplayName, u.Email,
                       u.CreateDateTime
                  FROM UserProfile u";
 
