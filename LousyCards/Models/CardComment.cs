@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System;
-using LousyCards.Models;
-using Microsoft.Extensions.Hosting;
 
 namespace LousyCards.Models
 {

@@ -33,6 +33,12 @@ namespace LousyCards.Controllers
             return View(userProfiles);
         }
 
+        [HttpGet("{firebaseUserId}")]
+        public IActionResult GetUserProfile(string firebaseUserId)
+        {
+            return Ok(_userProfileRepository.GetByFirebaseUserId(firebaseUserId));
+        }
+
 
         // GET: UserProfileController/Details/5
         [Authorize]
