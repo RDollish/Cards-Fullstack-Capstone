@@ -21,6 +21,6 @@ namespace LousyCards.Models
         [MaxLength(255)]
         public string Email { get; set; }
 
-        public DateTime CreateDateTime { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

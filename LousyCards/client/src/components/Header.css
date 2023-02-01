@@ -1,0 +1,36 @@
+.navbar {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 3rem;
+    z-index: 1;
+  }
+  
+  .navbar .nav-item {
+    display: inline-block;
+    float: left;
+  }
+  
+  .navbar .nav-link {
+    display: block;
+    padding: 10px 15px;
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    float: left;
+  }
+  
+  .nav-item {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .nav-link {
+    font-size: 18px;
+    color: #333;
+    text-transform: lowercase;
+  }
+  

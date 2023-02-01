@@ -25,6 +25,7 @@ namespace LousyCards
 
             services.AddControllers();
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<ICardRepository, CardRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LousyCards", Version = "v1" });
