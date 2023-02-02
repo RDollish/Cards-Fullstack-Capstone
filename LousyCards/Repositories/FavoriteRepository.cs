@@ -9,10 +9,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace LousyCards.Repositories
 {
-    public class CommentRepository : BaseRepository, ICommentRepository
+    public class FavoriteRepository : BaseRepository, IFavoriteRepository
     {
-        public CommentRepository(IConfiguration configuration) : base(configuration) { }
-        public List<CardComment> GetAll()
+        public FavoriteRepository(IConfiguration configuration) : base(configuration) { }
+        public List<CardFavorite> GetAll()
         {
             using (var conn = Connection)
             {
@@ -20,15 +20,15 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT co.Id, co.Comment, co.CreatedAt, co.UserId, co.CardId
+           SELECT f.Id, f.CreatedAt,
 
                   uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
                   c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     
-             FROM Comment co
-                  JOIN UserProfile uc ON co.UserId = uc.Id
-                  JOIN Card c ON co.CardId = c.Id
+             FROM Favorite f
+                  JOIN UserProfile uc ON f.UserId = uc.Id
+                  JOIN Card c ON c.CardId = f.Id
             WHERE c.CreatedAt <= SYSDATETIME()
          ORDER BY c.CreatedAt DESC
         ";
@@ -36,13 +36,12 @@ namespace LousyCards.Repositories
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
 
-                        var comments = new List<CardComment>();
+                        var favorites = new List<CardFavorite>();
                         while (reader.Read())
                         {
-                            comments.Add(new CardComment()
+                            favorites.Add(new CardFavorite()
                             {
                                 Id = DbUtils.GetInt(reader, "Id"),
-                                Comment = DbUtils.GetString(reader, "Comment"),
                                 UserProfile = new UserProfile()
                                 {
                                     FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
@@ -63,12 +62,12 @@ namespace LousyCards.Repositories
                             });
                         }
 
-                        return comments;
+                        return favorites;
                     }
                 }
             }
         }
-        public List<CardComment> GetByCardId(int cardId)
+        public List<CardFavorite> GetByCardId(int cardId)
         {
             using (var conn = Connection)
             {
@@ -76,16 +75,16 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT co.Id, co.Comment, co.CreatedAt, co.UserId, co.CardId
+           SELECT f.Id, f.CreatedAt,
 
                   uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
                   c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     
-             FROM Comment co
-                  JOIN UserProfile uc ON co.UserId = uc.Id
-                  JOIN Card c ON co.CardId = c.Id
-            WHERE c.Id = @cardId
+             FROM Favorite f
+                  JOIN UserProfile uc ON f.UserId = uc.Id
+                  JOIN Card c ON c.CardId = f.Id
+            WHERE c.CreatedAt <= SYSDATETIME()
          ORDER BY c.CreatedAt DESC
         ";
 
@@ -93,13 +92,13 @@ namespace LousyCards.Repositories
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        var comments = new List<CardComment>();
+
+                        var favorites = new List<CardFavorite>();
                         while (reader.Read())
                         {
-                            comments.Add(new CardComment()
+                            favorites.Add(new CardFavorite()
                             {
                                 Id = DbUtils.GetInt(reader, "Id"),
-                                Comment = DbUtils.GetString(reader, "Comment"),
                                 UserProfile = new UserProfile()
                                 {
                                     FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
@@ -120,12 +119,12 @@ namespace LousyCards.Repositories
                             });
                         }
 
-                        return comments;
+                        return favorites;
                     }
                 }
             }
         }
-        public void Add(CardComment comment)
+        public void Add(CardFavorite favorite)
         {
             using (var conn = Connection)
             {
@@ -133,13 +132,12 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                INSERT INTO Comment (Comment, CardId, UserId)
+                INSERT INTO Favorite (CardId, UserId)
                 VALUES (@Comment, @CardId, @UserId)
             ";
 
-                    cmd.Parameters.AddWithValue("@Comment", comment.Comment);
-                    cmd.Parameters.AddWithValue("@CardId", comment.Card.Id);
-                    cmd.Parameters.AddWithValue("@UserId", comment.UserProfile.Id);
+                    cmd.Parameters.AddWithValue("@CardId", favorite.Card.Id);
+                    cmd.Parameters.AddWithValue("@UserId", favorite.UserProfile.Id);
 
                     cmd.ExecuteNonQuery();
                 }

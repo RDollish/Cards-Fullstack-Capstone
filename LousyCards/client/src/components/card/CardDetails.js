@@ -1,0 +1,2 @@
+import './CardDetails.css'
+

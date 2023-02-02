@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-import { AddCard } from "../../modules/cardManager";
+import { addCard } from "../../modules/cardManager";
 import { getAllOccasions } from "../../modules/occasionManager";
 
-export default function SaveCard() {
+
+export default function SaveCard(props) {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("Untitled");
   const [description, setDescription] = useState("No description provided.");
   const [imageUrl, setImageUrl] = useState();
   const [occasions, setOccasions] = useState([]);
-  const [occasion, setOccasion] = useState();
+  const [occasionId, setOccasion] = useState();
   const [userId, setUserId] = useState();
+  const [cardDetails, setCardDetails] = useState();
+  const { canvas } = props;
+
+  useEffect(() => {
+    const userIdFromLocalStorage = localStorage.getItem("userId");
+    setUserId(Number(userIdFromLocalStorage));
+  }, []);
+  
   
   useEffect(() => {
     getAllOccasions().then(results => {
@@ -20,16 +29,22 @@ export default function SaveCard() {
     });
   }, []);
 
-  const registerClick = (e) => {
+  const registerClick = async (e) => {
     e.preventDefault();
+
+    setImageUrl(canvas.toDataURL('png'));
+    setCardDetails(JSON.stringify(canvas.toJSON()));
+    if (imageUrl && cardDetails != null) {
       const Card = {
         title,
         description,
         imageUrl,
-        occasion,
-        userId
+        occasionId,
+        userId,
+        cardDetails
       };
-      AddCard(Card).then(() => navigate("/"));
+      addCard(Card).then(() => navigate("/"));
+    }
   };
 
     return (
@@ -44,6 +59,14 @@ export default function SaveCard() {
           />
         </FormGroup>
         <FormGroup>
+  <Input type="select" id="occasion" onChange={(e) => setOccasion(Number(e.target.value))}>
+  <option value="">Select an Occasion</option>
+    {occasions.map(occ => (
+    <option key ={occ.id} value={occ.id}>{occ.name}</option>
+    ))}
+  </Input>
+</FormGroup>
+        <FormGroup>
           <Input
             id="description"
             type="text"
@@ -51,14 +74,6 @@ export default function SaveCard() {
             onChange={(e) => setDescription(e.target.value)}
           />
         </FormGroup>
-        <FormGroup>
-  <Input type="select" id="occasion" onChange={(e) => setOccasion(e.target.value)}>
-  <option value="">Select an Occasion</option>
-    {occasions.map(occ => (
-    <option key ={occ.id} value={occ.id}>{occ.name}</option>
-    ))}
-  </Input>
-</FormGroup>
         <FormGroup>
           <Button id="save">Save</Button>
         </FormGroup>

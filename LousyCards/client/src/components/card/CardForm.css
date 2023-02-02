@@ -5,9 +5,24 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .navigation-bar {
+}
+
+#btn-addParty,
+#btn-addHeart,
+#btn-addKiss,
+#btn-addAww,
+#btn-addSurprise,
+#btn-addLol,
+#btn-addHands,
+#btn-addHurt,
+#btn-addHug {
+    background-color: transparent;
+    font-size: 40px;
+    border: none;
+}
+
+
+.navigation-bar {
     display: absolute;
     width: 100px;
     background-color: transparent;
@@ -17,67 +32,62 @@ button {
     bottom: 0;
     z-index: 2;
     padding-top: 5rem;
-  }
+}
 
-  .canvas-container {
-    display: absolute;
+.canvas-container, .my-canvas-container {
+    width: auto;
+    height: auto;
+}
 
-  }
 
-  
 
-  canvas {
+canvas {
     border: 2px solid black;
-    display: absolute;
+    /* display: absolute; */
     border-radius: 20px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 22.5%;
-    margin-left: 55%;
-  }
+    margin-top: -525px;
+    margin-left: 337px;
+}
 
-  
-  #title {
-    position: absolute;
-    top: 16%;
-    width: 46%;
+form {
+    margin: 0;
+}
+
+#title {
+    width: auto;
     left: 0;
-    right: 20%;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 26.1%;
-  }
-  
-  #description {
-    position: absolute;
-    top: 68%;
-    width: 46%;
-    left: 0;
-    right: 20%;
+    margin-left: 325px;
+}
+
+#description {
+    width: auto;
+    min-width: 580px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 26.1%;
-  }
-  #occasion {
-    position: absolute;
-    top: 13%;
-    width: 12%;
-    left: 35.5%;
-    right: 20%;
+    margin-top: 410px;
+    margin-left: 317px;
+}
+
+#occasion {
+    width: 15%;
+    margin-top: -600px;
+    margin-left: 780px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 26.1%;
-  }
-  #save {
-    position: absolute;
-    top: 73%;
-    width: 46%;
-    left: 0;
-    right: 20%;
+}
+
+#save {
+    /* position: absolute; */
+    margin-top: 5px;
+    width: 450px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 27.2%;
-  }
+    margin-left: 395px;
+}

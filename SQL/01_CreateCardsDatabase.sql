@@ -38,7 +38,8 @@ CREATE TABLE [Card] (
   [ImageUrl] nvarchar(255) NOT NULL,
   [Title] nvarchar(50) NOT NULL DEFAULT 'Untitled',
   [Description] nvarchar(180) NOT NULL DEFAULT 'No description provided.',
-  [CreatedAt] datetime NOT NULL
+  [CreatedAt] datetime NOT NULL,
+  [Objects] varchar NOT NULL
 )
 GO
 
