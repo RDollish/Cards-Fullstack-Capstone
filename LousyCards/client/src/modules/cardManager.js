@@ -2,83 +2,85 @@ import { getToken } from "./authManager";
 
 const apiUrl = "/api/card";
 
-export const getAllCards = () => {
-  return getToken().then((token) => {
-    return fetch(apiUrl, {
+export const getAllCards = async () => {
+  try {
+    const token = await getToken();
+    const response = await fetch(apiUrl, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((resp) => {
-      if (resp.ok) {
-        return resp.json();
-      } else {
-        throw new Error(
-          "An unknown error occurred while trying to get cards.",
-        );
-      }
     });
-  });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get cards.");
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getCardDetails = (id) => {
-  
-  return getToken().then(token => {
-    return fetch(`${apiUrl}/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then((resp) => {
-      if (resp.ok) {
-        return resp.json();
-      } else {
-        throw new Error(
-          "An unknown error occurred while trying to get cards.",
-        );
-      }
-    });
-  });
-}
-
-
-  export const getUserCards = () => {
-  return getToken().then((token) => {
-    return fetch(`${apiUrl}/usercards`, {
+export const getCardDetails = async (id) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((resp) => {
-      if (resp.ok) {
-        return resp.json();
-      } else {
-        throw new Error(
-          "An unknown error occurred while trying to get posts.",
-        );
-      }
     });
-  });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get cards.");
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const AddCard = (card) => {
-  return getToken().then((token) => {
-    return fetch(apiUrl, {
+export const getUserCards = async () => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/usercards`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get posts.");
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addCard = async (card) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(card)
-    }).then((resp) => {
-      if (resp.ok) {
-        console.log("Card made successfully!")
-        return resp.json();
-      } else {
-        throw new Error(
-          "An error occurred while trying to add a card.",
-        );
-      }
+      body: JSON.stringify(card),
     });
-  });
-}
+
+    if (!response.ok) {
+      throw new Error("An error occurred while trying to add a card.");
+    }
+
+    console.log("Card made successfully!");
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};

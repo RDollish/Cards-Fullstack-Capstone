@@ -23,7 +23,11 @@ namespace LousyCards.Models
 
         public int OccasionId { get; set; }
 
+
         public int UserId { get; set; }
+        public string CardDetails { get; set; }
+
+        public Occasion Occasion { get; set; }
 
         public UserProfile UserProfile { get; set; }
     }

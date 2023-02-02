@@ -1,6 +1,13 @@
-﻿namespace LousyCards.Repositories
+﻿using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
+using LousyCards.Models;
+
+namespace LousyCards.Repositories
 {
-    public class ICommentRepository
+    public interface ICommentRepository
     {
+        List<CardComment> GetAll();
+        public List<CardComment> GetByCardId(int cardId);
+        void Add(CardComment comment);
     }
 }

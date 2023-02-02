@@ -1,83 +1,54 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LousyCards.Models;
+using LousyCards.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
 
 namespace LousyCards.Controllers
 {
-    public class FavoriteController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class FavoriteController : ControllerBase
     {
-        // GET: FavoriteController
-        public ActionResult Index()
+        private readonly IFavoriteRepository _favoriteRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
+        public FavoriteController(IFavoriteRepository favoriteRepository, IUserProfileRepository userProfileRepository)
         {
-            return View();
+            _favoriteRepository = favoriteRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
-        // GET: FavoriteController/Details/5
-        public ActionResult Details(int id)
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            return View();
+            return Ok(_favoriteRepository.GetAll());
         }
 
-        // GET: FavoriteController/Create
-        public ActionResult Create()
+        [Authorize]
+        [HttpGet("{cardId}")]
+        public IActionResult GetByCardId(int cardId)
         {
-            return View();
+            return Ok(_favoriteRepository.GetByCardId(cardId));
         }
 
-        // POST: FavoriteController/Create
+        [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Add(CardFavorite favorite)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            UserProfile user = GetCurrentUserProfile();
 
-        // GET: FavoriteController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
+            favorite.CreatedAt = DateTime.Now;
+            favorite.UserId = user.Id;
+            _favoriteRepository.Add(favorite);
+            return CreatedAtAction(nameof(GetAll), favorite);
         }
-
-        // POST: FavoriteController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        private UserProfile GetCurrentUserProfile()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FavoriteController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: FavoriteController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
+
 }

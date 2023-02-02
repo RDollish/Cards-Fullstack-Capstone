@@ -15,7 +15,7 @@ export default function Header({ isLoggedIn }) {
   return (
     <div>
       <Navbar color="light" light>
-        <NavbarBrand tag={RRNavLink} to="/">Lousy Cards</NavbarBrand>
+        <NavbarBrand tag={RRNavLink} to="/">lousy cards</NavbarBrand>
           <Nav className="ml-auto" navbar>
             {isLoggedIn &&
               <>

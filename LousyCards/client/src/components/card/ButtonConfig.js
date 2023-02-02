@@ -23,6 +23,15 @@ function ButtonConfig(props) {
     <div className="navigation-bar">
       <div className="App-Config">         
             <ConfigBtn icon="plus-circle" id="btn-addText" text=" TEXT"/>
+            <ConfigBtn icon="plus-circle" id="btn-addParty" text="🥳"/>
+            <ConfigBtn icon="plus-circle" id="btn-addHeart" text="❤️"/>
+            <ConfigBtn icon="plus-circle" id="btn-addKiss" text="😘"/>
+            <ConfigBtn icon="plus-circle" id="btn-addAww" text="🥺"/>
+            <ConfigBtn icon="plus-circle" id="btn-addSurprise" text="🙀"/>
+            <ConfigBtn icon="plus-circle" id="btn-addLol" text="😹"/>
+            <ConfigBtn icon="plus-circle" id="btn-addHands" text="🙌"/>
+            <ConfigBtn icon="plus-circle" id="btn-addHurt" text="🤕"/>
+            <ConfigBtn icon="plus-circle" id="btn-addHug" text="🤗"/>
       </div>
       </div>
     );

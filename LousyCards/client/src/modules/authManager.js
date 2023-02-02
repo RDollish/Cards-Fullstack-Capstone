@@ -21,8 +21,13 @@ const _doesUserExist = (firebaseUserId) => {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }).then(resp => resp.json()));
+    }).then(resp => resp.json()))
+    .then(userProfile => {
+      localStorage.setItem("userId", userProfile.id);
+      return userProfile;
+    });
 };
+
 
 const _saveUser = (userProfile) => {
   return getToken().then((token) =>
