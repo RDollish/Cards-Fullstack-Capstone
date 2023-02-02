@@ -10,27 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 
 using LousyCards.Models;
 using LousyCards.Repositories;
+using System;
 
 namespace LousyCards.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public class UserProfileController : Controller
     {
         private readonly IUserProfileRepository _userProfileRepository;
         public UserProfileController(IUserProfileRepository profileRepository)
         {
             _userProfileRepository = profileRepository;
-        }
-        // GET: UserProfileController      Shows all active accounts
-        public ActionResult Index()
-        {
-            List<UserProfile> userProfiles = _userProfileRepository.GetAll();
-
-            if (userProfiles.Count < 1)
-            {
-                return NotFound();
-            }
-
-            return View(userProfiles);
         }
 
         [HttpGet("{firebaseUserId}")]
@@ -39,19 +31,47 @@ namespace LousyCards.Controllers
             return Ok(_userProfileRepository.GetByFirebaseUserId(firebaseUserId));
         }
 
-
-        // GET: UserProfileController/Details/5
-        [Authorize]
-        public ActionResult Details(int id)
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
         {
-            UserProfile userProfile = _userProfileRepository.GetById(id);
+            var userProfile = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
 
-            if (userProfile == null )
+            if (userProfile == null)
             {
                 return NotFound();
             }
 
-            return View(userProfile);
+            return Ok(userProfile);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+
+            return Ok(_userProfileRepository.GetUsers());
+        }
+
+        [HttpGet("details/{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            var userProfile = _userProfileRepository.GetById(id);
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+            return Ok(userProfile);
+
+        }
+
+        [HttpPost]
+        public IActionResult Post(UserProfile userProfile)
+        {
+            userProfile.CreatedAt = DateTime.Now;
+            _userProfileRepository.Add(userProfile);
+            return CreatedAtAction(
+                nameof(GetUserProfile),
+                new { firebaseUserId = userProfile.FirebaseUserId },
+                userProfile);
         }
     }
 }

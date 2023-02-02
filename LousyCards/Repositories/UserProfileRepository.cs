@@ -21,9 +21,9 @@ namespace LousyCards.Repositories
                 {
                     cmd.CommandText = @"
                        SELECT u.id, u.FirebaseUserId, u.DisplayName, u.Email,
-                              u.CreateDateTime
+                              u.CreatedAt
                          FROM UserProfile u
-                     WHERE FirebaseUserId = @FirebaseuserId";
+                     WHERE Id = @Id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -88,7 +88,7 @@ namespace LousyCards.Repositories
         }
 
 
-        public List<UserProfile> GetAll()
+        public List<UserProfile> GetUsers()
         {
             using (SqlConnection conn = Connection)
             {
@@ -122,6 +122,27 @@ namespace LousyCards.Repositories
 
                         return userProfiles;
                     }
+                }
+            }
+        }
+        public void Add(UserProfile userProfile)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO UserProfile (FirebaseUserId, DisplayName, 
+                                                                 Email, CreatedAt)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@FirebaseUserId, @DisplayName, 
+                                                @Email, @CreatedAt)";
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
+                    DbUtils.AddParameter(cmd, "@DisplayName", userProfile.DisplayName);
+                    DbUtils.AddParameter(cmd, "@Email", userProfile.Email);
+                    DbUtils.AddParameter(cmd, "@CreatedAt", userProfile.CreatedAt);
+
+                    userProfile.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
