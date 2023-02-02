@@ -13,6 +13,11 @@ function ConfigBtn(props) {
     )
   }
 
+//   const handleSave = () => {
+//     const canvasData = JSON.stringify(canvas.toJSON());
+//     // save canvasData to your database 
+// }
+
 function ButtonConfig(props) {
     return (
     <div className="navigation-bar">

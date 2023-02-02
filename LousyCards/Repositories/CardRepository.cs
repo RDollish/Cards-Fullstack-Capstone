@@ -141,7 +141,7 @@ namespace LousyCards.Repositories
                             cards.Add(new Card()
                             {
                                 Title = DbUtils.GetString(reader, "Title"),
-                                Description = DbUtils.GetString(reader, "Content"),
+                                Description = DbUtils.GetString(reader, "Description"),
                                 ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
                                 CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
                                 OccasionId = DbUtils.GetInt(reader, "OccasionId"),

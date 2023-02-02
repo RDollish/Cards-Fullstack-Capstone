@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using LousyCards.Models;
 using LousyCards.Repositories;
+using System.Collections.Generic;
 
 namespace LousyCards.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class OccasionController : ControllerBase
     {
         private readonly IOccasionRepository _occasionRepository;
@@ -20,17 +17,15 @@ namespace LousyCards.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllOccasions()
+        public ActionResult<List<Occasion>> GetAllOccasions()
         {
-            var occasions = _occasionRepository.GetAllOccasions();
-
-            return Ok(occasions);
+            return Ok(_occasionRepository.GetAllOccasions());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOccasionById(int id)
+        public ActionResult<Occasion> GetOccasionById(int id)
         {
-            var occasion = _occasionRepository.GetOccasionById(id);
+            Occasion occasion = _occasionRepository.GetOccasionById(id);
 
             if (occasion == null)
             {

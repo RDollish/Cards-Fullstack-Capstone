@@ -19,7 +19,6 @@ function App() {
       // firebase.auth().currentUser.uid grabs the firebaseUUID -- firebase has many helpers like this
       getUserDetails(firebase.auth().currentUser.uid)
         .then(userObject => {
-          setRole(userObject.userType.name)
         })
     } else {
       setRole("")
