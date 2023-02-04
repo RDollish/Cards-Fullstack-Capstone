@@ -9,12 +9,13 @@ export default function CardList() {
   useEffect(() => {
     getAllCards().then(setCards);
   }, []);
+  
 
   return (
     <>
       <h1 className="text-center">your feed</h1>
       <section>
-      <div class="card-container">
+      <div className="card-container">
         {cards.map((c) => (
           <Card key={c.id} card={c} />
         ))}

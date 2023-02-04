@@ -37,18 +37,25 @@ namespace LousyCards.Controllers
         [HttpPost]
         public IActionResult Add(CardComment comment)
         {
-            UserProfile user = GetCurrentUserProfile();
 
             comment.CreatedAt = DateTime.Now;
-            comment.UserId = user.Id;
             _commentRepository.Add(comment);
-            return CreatedAtAction(nameof(GetAll), comment);
+            return CreatedAtAction(
+                nameof(GetAll), new { comment.Id }, comment);
         }
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _commentRepository.Delete(id);
+            return NoContent();
+        }
+
     }
 
 }

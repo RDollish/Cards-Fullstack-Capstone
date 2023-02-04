@@ -9,5 +9,6 @@ namespace LousyCards.Repositories
         List<CardFavorite> GetAll();
         public List<CardFavorite> GetByCardId(int cardId);
         void Add(CardFavorite favorite);
+        void Delete(int cardId, int userId);
     }
 }

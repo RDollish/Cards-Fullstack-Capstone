@@ -10,5 +10,6 @@ namespace LousyCards.Repositories
         Card GetById(int id);
         List<Card> GetByUserId(string firebaseId);
         void Add(Card card);
+        void Delete(int id);
     }
 }

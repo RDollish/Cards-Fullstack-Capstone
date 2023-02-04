@@ -9,5 +9,6 @@ namespace LousyCards.Repositories
         List<CardComment> GetAll();
         public List<CardComment> GetByCardId(int cardId);
         void Add(CardComment comment);
+        void Delete(int id);
     }
 }

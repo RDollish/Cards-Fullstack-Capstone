@@ -1,4 +1,4 @@
-import CardForm from "./CardForm";
+
 
 function ConfigBtn(props) {
     const btnClass = "fa fa-" + props.icon + " btn";
@@ -13,12 +13,7 @@ function ConfigBtn(props) {
     )
   }
 
-//   const handleSave = () => {
-//     const canvasData = JSON.stringify(canvas.toJSON());
-//     // save canvasData to your database 
-// }
-
-function ButtonConfig(props) {
+function ButtonConfig() {
     return (
     <div className="navigation-bar">
       <div className="App-Config">         
