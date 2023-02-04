@@ -20,45 +20,29 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT co.Id, co.Comment, co.CreatedAt, co.UserId, co.CardId
-
-                  uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
-
-                  c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
-                    
-             FROM Comment co
-                  JOIN UserProfile uc ON co.UserId = uc.Id
-                  JOIN Card c ON co.CardId = c.Id
-            WHERE c.CreatedAt <= SYSDATETIME()
-         ORDER BY c.CreatedAt DESC
-        ";
-
+                    SELECT co.Id AS CommentId, co.Comment, co.CreatedAt, co.UserId, co.CardId,
+                    uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt
+                    FROM Comment co
+                    JOIN UserProfile uc ON co.UserId = uc.Id
+                    ORDER BY co.CreatedAt DESC";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-
                         var comments = new List<CardComment>();
                         while (reader.Read())
                         {
                             comments.Add(new CardComment()
                             {
-                                Id = DbUtils.GetInt(reader, "Id"),
+                                Id = DbUtils.GetInt(reader, "CommentId"),
                                 Comment = DbUtils.GetString(reader, "Comment"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                CardId = DbUtils.GetInt(reader, "CardId"),
+                                UserId = DbUtils.GetInt(reader, "UserId"),
                                 UserProfile = new UserProfile()
                                 {
                                     FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
                                     DisplayName = DbUtils.GetString(reader, "DisplayName"),
                                     Email = DbUtils.GetString(reader, "Email"),
                                     CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedAt")
-                                },
-                                Card = new Card()
-                                {
-                                    Id = DbUtils.GetInt(reader, "Id"),
-                                    Title = DbUtils.GetString(reader, "Title"),
-                                    ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
-                                    Description = DbUtils.GetString(reader, "Description"),
-                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
-                                    OccasionId = DbUtils.GetInt(reader, "OccasionId"),
-                                    UserId = DbUtils.GetInt(reader, "UserId"),
                                 }
                             });
                         }
@@ -68,6 +52,7 @@ namespace LousyCards.Repositories
                 }
             }
         }
+
         public List<CardComment> GetByCardId(int cardId)
         {
             using (var conn = Connection)
@@ -76,17 +61,15 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT co.Id, co.Comment, co.CreatedAt, co.UserId, co.CardId
+                    SELECT co.Id AS CommentId, co.Comment, co.CreatedAt, co.UserId, co.CardId,
+                    uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+                    c.Id AS CardId, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                FROM Comment co
+                JOIN UserProfile uc ON co.UserId = uc.Id
+                JOIN Card c ON co.CardId = c.Id
+                WHERE c.CreatedAt <= SYSDATETIME()
+                ORDER BY c.CreatedAt DESC
 
-                  uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
-
-                  c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
-                    
-             FROM Comment co
-                  JOIN UserProfile uc ON co.UserId = uc.Id
-                  JOIN Card c ON co.CardId = c.Id
-            WHERE c.Id = @cardId
-         ORDER BY c.CreatedAt DESC
         ";
 
                     cmd.Parameters.AddWithValue("@cardId", cardId);
@@ -98,7 +81,7 @@ namespace LousyCards.Repositories
                         {
                             comments.Add(new CardComment()
                             {
-                                Id = DbUtils.GetInt(reader, "Id"),
+                                Id = DbUtils.GetInt(reader, "CommentId"),
                                 Comment = DbUtils.GetString(reader, "Comment"),
                                 UserProfile = new UserProfile()
                                 {
@@ -109,7 +92,7 @@ namespace LousyCards.Repositories
                                 },
                                 Card = new Card()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "CardId"),
                                     Title = DbUtils.GetString(reader, "Title"),
                                     ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
                                     Description = DbUtils.GetString(reader, "Description"),
@@ -133,14 +116,33 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                INSERT INTO Comment (Comment, CardId, UserId)
-                VALUES (@Comment, @CardId, @UserId)
+                INSERT INTO Comment (Comment, CardId, UserId, CreatedAt)
+                VALUES (@Comment, @CardId, @UserId, @CreatedAt)
             ";
 
-                    cmd.Parameters.AddWithValue("@Comment", comment.Comment);
-                    cmd.Parameters.AddWithValue("@CardId", comment.Card.Id);
-                    cmd.Parameters.AddWithValue("@UserId", comment.UserProfile.Id);
+                    DbUtils.AddParameter(cmd, "@Comment", comment.Comment);
+                    DbUtils.AddParameter(cmd, "@CardId", comment.CardId);
+                    DbUtils.AddParameter(cmd, "@UserId", comment.UserId);
+                    DbUtils.AddParameter(cmd, "@CreatedAt", comment.CreatedAt);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                DELETE FROM Comment 
+                WHERE Id = @Id
+            ";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
                     cmd.ExecuteNonQuery();
                 }
             }

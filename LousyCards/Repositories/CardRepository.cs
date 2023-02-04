@@ -224,6 +224,26 @@ namespace LousyCards.Repositories
                 }
             }
         }
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                DELETE FROM Card 
+                WHERE Id = @Id
+            ";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
     }
 }
 

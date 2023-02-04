@@ -68,5 +68,14 @@ namespace LousyCards.Controllers
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _cardRepository.Delete(id);
+            return NoContent();
+        }
+
     }
 }

@@ -48,8 +48,7 @@ const CardForm = () => {
 
     useEffect(() => {
         cardResizer()
-        console.log("woohoo")
-    }, [mycanvas, /*window resizing, somehow*/])
+    }, [mycanvas])
 
     const handleAddText = (canv) => {
         addText(canv);
@@ -395,7 +394,6 @@ const CardForm = () => {
 
 
     const initCanvas = () => {
-
         if (checker === 0) {
             const mainCanvas = new fabric.Canvas("mainCanvas", {
                 height: 400,
@@ -405,7 +403,6 @@ const CardForm = () => {
                 preserveObjectStacking: true,
                 controlsAboveOverlay: true
             });
-
             addNewText(mainCanvas)
             addNewParty(mainCanvas)
             addNewHeart(mainCanvas)

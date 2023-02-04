@@ -1,11 +1,11 @@
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content:center;
-    width:100%
-  }
+    justify-content: center;
+    width: 100%
+}
 
-  .card {
+.card {
     width: calc(38% - 20px);
     margin-bottom: 40px;
     margin-left: 40px;
@@ -13,45 +13,113 @@
     background-color: #FFB6C1;
     text-align: center;
     border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     cursor: pointer;
-  }
+}
 
-  img {
+img {
     border: dotted white;
-  }
+}
 
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
 
-  .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
+    50% {
+        transform: translateY(-10px);
+    }
 
-  .card h3 {
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.card:hover {
+    animation: bounce 0.8s infinite alternate;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.card h3 {
     margin-top: 20px;
     font-size: 22px;
     color: rgb(255, 255, 255);
-  }
+}
 
-  .card h4 {
+.card h4 {
     margin-top: 20px;
     color: rgb(255, 255, 255);
-  }
+}
 
-  .card img {
+.card img {
     width: 80%;
     margin: 20px auto;
-  }
+}
 
-  .card p {
+.card p {
     font-size: 16px;
     color: rgb(255, 255, 255);
-  }
+}
 
-  .card-author {
+.card-author {
     font-weight: bold;
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
-  }
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%
+}
+
+.btn-favorite,
+.btn-comment {
+    font-size: 28px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: -10px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    float: left;
+    text-align: center;
+    border-radius: 50%;
+}
+
+
+.btn-favorite:hover,
+.btn-comment:hover {
+    background: radial-gradient(circle, rgba(248, 104, 104, 0.8) 0%, transparent 100%);
+}
+
+
+.favorited {
+    background: radial-gradient(circle at center, red -40%, transparent);
+}
+
+.drawer-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button.post-comment-button {
+    width: 20%;
+    height: 6%;
+    align-items: center;
+    background-color: rgb(254, 88, 88);
+    color: white;
+}

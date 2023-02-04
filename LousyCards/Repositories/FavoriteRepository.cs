@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 
 
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
+using System;
 
 namespace LousyCards.Repositories
 {
@@ -20,7 +22,7 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT f.Id, f.CreatedAt,
+           SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
 
                   uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
@@ -28,7 +30,7 @@ namespace LousyCards.Repositories
                     
              FROM Favorite f
                   JOIN UserProfile uc ON f.UserId = uc.Id
-                  JOIN Card c ON c.CardId = f.Id
+                  JOIN Card c ON c.Id = f.CardId
             WHERE c.CreatedAt <= SYSDATETIME()
          ORDER BY c.CreatedAt DESC
         ";
@@ -42,6 +44,9 @@ namespace LousyCards.Repositories
                             favorites.Add(new CardFavorite()
                             {
                                 Id = DbUtils.GetInt(reader, "Id"),
+                                UserId = DbUtils.GetInt(reader, "UserId"),
+                                CardId = DbUtils.GetInt(reader, "CardId"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
                                 UserProfile = new UserProfile()
                                 {
                                     FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
@@ -75,7 +80,7 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT f.Id, f.CreatedAt,
+           SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
 
                   uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
@@ -83,7 +88,7 @@ namespace LousyCards.Repositories
                     
              FROM Favorite f
                   JOIN UserProfile uc ON f.UserId = uc.Id
-                  JOIN Card c ON c.CardId = f.Id
+                  JOIN Card c ON c.Id = f.CardId
             WHERE c.CreatedAt <= SYSDATETIME()
          ORDER BY c.CreatedAt DESC
         ";
@@ -99,6 +104,9 @@ namespace LousyCards.Repositories
                             favorites.Add(new CardFavorite()
                             {
                                 Id = DbUtils.GetInt(reader, "Id"),
+                                UserId = DbUtils.GetInt(reader, "UserId"),
+                                CardId = DbUtils.GetInt(reader, "CardId"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
                                 UserProfile = new UserProfile()
                                 {
                                     FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
@@ -132,14 +140,42 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                INSERT INTO Favorite (CardId, UserId)
-                VALUES (@Comment, @CardId, @UserId)
+                    INSERT INTO Favorite (CardId, UserId, CreatedAt)
+                    VALUES (@CardId, @UserId, @CreatedAt)
+
+
             ";
 
-                    cmd.Parameters.AddWithValue("@CardId", favorite.Card.Id);
-                    cmd.Parameters.AddWithValue("@UserId", favorite.UserProfile.Id);
+                    DbUtils.AddParameter(cmd, "@UserId", favorite.UserId);
+                    DbUtils.AddParameter(cmd, "@CardId", favorite.CardId);
+                    DbUtils.AddParameter(cmd, "@CreatedAt", favorite.CreatedAt);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void Delete(int cardId, int userId)
+        {
+            {
+                using (var conn = Connection)
+                {
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                DELETE FROM Favorite
+                WHERE CardId = @cardId AND UserId = @userId";
+
+                        cmd.Parameters.AddWithValue("@cardId", cardId);
+                        cmd.Parameters.AddWithValue("@userId", userId);
+
+                        int rowsDeleted = cmd.ExecuteNonQuery();
+
+                        if (rowsDeleted == 0)
+                        {
+                            throw new Exception("No favorite found to delete");
+                        }
+                    }
                 }
             }
         }

@@ -13,10 +13,12 @@ namespace LousyCards.Controllers
     {
         private readonly IFavoriteRepository _favoriteRepository;
         private readonly IUserProfileRepository _userProfileRepository;
-        public FavoriteController(IFavoriteRepository favoriteRepository, IUserProfileRepository userProfileRepository)
+        private readonly ICardRepository _cardRepository;
+        public FavoriteController(IFavoriteRepository favoriteRepository, IUserProfileRepository userProfileRepository, ICardRepository cardRepository)
         {
             _favoriteRepository = favoriteRepository;
             _userProfileRepository = userProfileRepository;
+            _cardRepository = cardRepository;   
         }
 
         [Authorize]
@@ -37,18 +39,28 @@ namespace LousyCards.Controllers
         [HttpPost]
         public IActionResult Add(CardFavorite favorite)
         {
-            UserProfile user = GetCurrentUserProfile();
 
             favorite.CreatedAt = DateTime.Now;
-            favorite.UserId = user.Id;
             _favoriteRepository.Add(favorite);
-            return CreatedAtAction(nameof(GetAll), favorite);
+            return CreatedAtAction(
+                nameof(GetAll), new { favorite.Id }, favorite);
         }
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
-    }
+        private Card GetCurrentCard(int cardId)
+        {
+            return _cardRepository.GetById(cardId);
+        }
+        [Authorize]
+        [HttpDelete("{cardId}/{userId}")]
+        public IActionResult Delete(int cardId, int userId)
+        {
+            _favoriteRepository.Delete(cardId, userId);
+            return NoContent();
+        }
 
+    }
 }
