@@ -53,7 +53,7 @@ export const getUserCards = async () => {
     });
 
     if (!response.ok) {
-      throw new Error("An unknown error occurred while trying to get posts.");
+      throw new Error("An unknown error occurred while trying to get cards.");
     }
 
     return response.json();
@@ -84,3 +84,46 @@ export const addCard = async (card) => {
     throw error;
   }
 };
+
+export const editCard = async (id, card) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(card),
+    });
+
+    if (!response.ok) {
+      throw new Error("An error occurred while trying to edit a card.");
+    }
+
+    console.log("Card edited successfully!");
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCard = async (id) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("An error occurred while trying to delete the card.");
+    }
+
+    console.log("Card deleted successfully!");
+  } catch (error) {
+    throw error;
+  }
+};
+

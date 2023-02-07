@@ -61,7 +61,7 @@ export const addFavorite = async (favorite) => {
       }
 
       console.log("Favorite deleted successfully!");
-      return response.json();
+      return response;
     } catch (error) {
       throw error;
     }

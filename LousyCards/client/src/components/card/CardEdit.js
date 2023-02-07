@@ -3,54 +3,37 @@ import { fabric } from "fabric";
 import ButtonConfig from "./ButtonConfig";
 import './CardForm.css'
 import SaveCard from "./CardSubmit";
+import { getCardDetails } from "../../modules/cardManager";
 
 
-
-const CardForm = () => {
-    let checker = 0
-    const [mycanvas, setCanvas] = useState("");
-
-    const cardResizer = () => {
-        if (mycanvas !== "") {
-            const canvas = document.getElementById('mainCanvas');
-            const fabricCanvas = mycanvas;
-
-            // canvasParent is the parent element of the canvas.
-            // We'll monitor changes in its width through a ResizeObserver.
-            // When the width of canvasParent changes, we change the width (and height)
-            // of the fabric canvas as well.
-            const canvasParent = canvas?.parentElement;
-
-            // Start a resize observer on the parent of the canvas
-            new ResizeObserver(() => {
-
-                const fabricWidth = fabricCanvas?.getWidth();
-                const fabricHeight = fabricCanvas?.getHeight();
-                const cssWidth = Math.min(canvasParent.clientWidth, fabricWidth);
-                const ratio = fabricWidth / canvasParent.clientWidth;
-
-                fabric.Object.prototype.set({
-                    cornerSize: ratio * 10,
-                    borderScaleFactor: ratio
-                });
-
-                fabric.Object.prototype.controls.mtr.offsetY = -25 * ratio;
-
-                fabricCanvas.setDimensions({
-                    width: cssWidth + 'px',
-                    height: cssWidth / (fabricWidth / fabricHeight) + 'px'
-                }, {
-                    cssOnly: true
-                })
-                    .requestRenderAll();
-
-            }).observe(canvasParent);
-        }
-    }
+const CardEdit = (props) => {
+    const [mycanvas, setCanvas] = useState(null);
+    const [card, setCard] = useState();
+    const [userId, setUserId] = useState();
+    const [cardId, setCardId] = useState();
+  
+    useEffect(() => {
+      const userIdFromLocalStorage = localStorage.getItem("userId");
+      setUserId(Number(userIdFromLocalStorage));
+    }, []);
 
     useEffect(() => {
-        cardResizer()
-    }, [mycanvas])
+        const pathArray = window.location.pathname.split('/');
+        setCardId(pathArray[pathArray.length - 1]);
+      }, []);
+  
+    useEffect(() => {
+      const fetchCard = async () => {
+        try {
+          const cardDetails = await getCardDetails(cardId);
+          setCard(cardDetails);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      fetchCard();
+    }, [userId, cardId]);
 
     const handleAddText = (canv) => {
         addText(canv);
@@ -393,41 +376,31 @@ const CardForm = () => {
         canv.setActiveObject(textbox);
         return textbox;
     };
-
-
-    const initCanvas = () => {
-        console.log(checker)
-        if (checker === 0) {
-            const mainCanvas = new fabric.Canvas("mainCanvas", {
-                height: 400,
-                width: 600,
-                centeredScaling: true,
-                backgroundColor: "#ffede8",
-                preserveObjectStacking: true,
-                controlsAboveOverlay: true
-            });
-            addNewText(mainCanvas)
-            addNewParty(mainCanvas)
-            addNewHeart(mainCanvas)
-            addNewKiss(mainCanvas)
-            addNewAww(mainCanvas)
-            addNewSurprise(mainCanvas)
-            addNewLol(mainCanvas)
-            addNewHands(mainCanvas)
-            addNewHurt(mainCanvas)
-            addNewHug(mainCanvas)
-
-
-            checker = checker + 1
-            setCanvas(mainCanvas);
-        }
-        else { return mycanvas}
-    };
-
+  
     useEffect(() => {
-        console.log(`${checker} at initilization`)
-        initCanvas();
-    }, []);
+      if (card) {
+        const mainCanvas = new fabric.Canvas("mainCanvas", {
+            height: 400,
+            width: 600,
+            centeredScaling: true,
+            backgroundColor: "#ffede8",
+            preserveObjectStacking: true,
+            controlsAboveOverlay: true
+        });
+        mainCanvas.loadFromJSON(JSON.parse(card.cardDetails));
+        setCanvas(mainCanvas);
+        addNewText(mainCanvas)
+        addNewParty(mainCanvas)
+        addNewHeart(mainCanvas)
+        addNewKiss(mainCanvas)
+        addNewAww(mainCanvas)
+        addNewSurprise(mainCanvas)
+        addNewLol(mainCanvas)
+        addNewHands(mainCanvas)
+        addNewHurt(mainCanvas)
+        addNewHug(mainCanvas)
+      }
+    }, [card]);
 
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = '#00dba1';
@@ -472,17 +445,17 @@ const CardForm = () => {
         ctx.drawImage(img, -size / 2, -size / 2, size, size);
         ctx.restore();
     }
-
+  
     return (
-        <>
-        <SaveCard canvas={mycanvas} />
-            <div className="canvas-container" id="my-canvas-container">
-                <ButtonConfig />
-
-                <canvas id="mainCanvas" ></canvas>
-            </div>
-        </>
+      <>
+        <SaveCard cardId={cardId} card={card} canvas={mycanvas} />
+        <div className="canvas-container" id="my-canvas-container">
+          <ButtonConfig />
+          <canvas id="mainCanvas" />
+        </div>
+      </>
     );
-};
-
-export default CardForm;
+  };
+  
+  export default CardEdit;
+  
