@@ -45,10 +45,10 @@ export const addComment = async (comment) => {
     }
   };
 
-  export const deleteComment = async (cardId, userId) => {
+  export const deleteComment = async (commentId) => {
     try {
       const token = await getToken();
-      const response = await fetch(`${apiUrl}/${cardId}/${userId}`, {
+      const response = await fetch(`${apiUrl}/${commentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,7 +61,6 @@ export const addComment = async (comment) => {
       }
 
       console.log("Comment deleted successfully!");
-      return response.json();
     } catch (error) {
       throw error;
     }

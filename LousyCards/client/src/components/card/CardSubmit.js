@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, FormGroup, Input } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
-import { addCard } from "../../modules/cardManager";
+import { addCard, editCard } from "../../modules/cardManager";
 import { getAllOccasions } from "../../modules/occasionManager";
 
 
 export default function SaveCard(props) {
   const navigate = useNavigate();
+  const { cardId, canvas, card } = props;
+  
 
   const [title, setTitle] = useState("Untitled");
   const [description, setDescription] = useState("No description provided.");
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState("");
   const [occasions, setOccasions] = useState([]);
-  const [occasionId, setOccasion] = useState();
+  const [occasionId, setOccasion] = useState("");
   const [userId, setUserId] = useState();
   const [cardDetails, setCardDetails] = useState();
-  const { canvas } = props;
+
+  useEffect(() => {
+    if (card?.title.length > 1)
+    {
+    setTitle(card.title)
+    setDescription(card.description)
+    setOccasion(card.occasionId)
+  }
+  }, [card]);
 
   useEffect(() => {
     const userIdFromLocalStorage = localStorage.getItem("userId");
     setUserId(Number(userIdFromLocalStorage));
   }, []);
-  
   
   useEffect(() => {
     getAllOccasions().then(results => {
@@ -31,8 +40,9 @@ export default function SaveCard(props) {
 
   const registerClick = async (e) => {
     e.preventDefault();
-
+    
     setImageUrl(canvas.toDataURL('png'));
+
     setCardDetails(JSON.stringify(canvas.toJSON()));
     if (imageUrl && cardDetails != null) {
       const Card = {
@@ -43,9 +53,14 @@ export default function SaveCard(props) {
         userId,
         cardDetails
       };
-      addCard(Card).then(() => navigate("/"));
+      if (card) {
+        editCard(cardId, Card).then(() => navigate("/"));
+      } else {
+        addCard(Card).then(() => navigate("/"));
+      }
     }
   };
+
 
     return (
     <Form onSubmit={registerClick}>

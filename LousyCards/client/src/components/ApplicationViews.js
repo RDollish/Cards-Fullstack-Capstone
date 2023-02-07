@@ -5,6 +5,7 @@ import Register from "./auth/Register";
 import UserDetails from "./user/UserDetails";
 import CardList from "./card/CardList";
 import CardForm from "./card/CardForm"
+import CardEdit from "./card/CardEdit"
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -28,6 +29,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           </Route>
 
           <Route path="addcard" element={isLoggedIn ? <CardForm /> : <Navigate to="/login" />} />
+          <Route path="edit/*" element={isLoggedIn ? <CardEdit /> : <Navigate to="/login" />} />
 
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
