@@ -1,40 +1,67 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Table } from "reactstrap";
 import { getUserDetailsById } from "../../modules/userProfileManager";
-
+import { Typography, Tabs, Tab, Grid } from "@mui/material";
+import UserCard from "../card/UserCard";
+import UserFavorite from "../card/UserFavorite";
 
 const UserDetails = () => {
-    const { id } = useParams();
-    const [user, setUser] = useState({});
+  const [value, setValue] = useState(0);
+  const [userId, setUserId] = useState(0);
+  const [user, setUser] = useState({});
 
-    useEffect(() => {
-        getUserDetailsById(id)
-            .then(userData => {
-                setUser(userData)
-            })
-    }, [])
+  useEffect(() => {
+    const userIdFromLocalStorage = localStorage.getItem("userId");
+    setUserId(Number(userIdFromLocalStorage));
+  }, []);
 
-    return (
-        <>
-            <Table>
-                <tbody>
-                    <tr>
-                        <th>Userame</th>
-                        <td>{user.displayName}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{user.email}</td>
-                    </tr>
-                    <tr>
-                        <th>Creation Date</th>
-                        <td>{user.createdAt}</td>
-                    </tr>
-                </tbody>
-            </Table>
-        </>
-    )
+
+useEffect(() => {
+  if (userId > 0) {
+    getUserDetailsById(userId)
+      .then((userData) => {
+        setUser(userData);
+      });
+  }
+}, [userId]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <Grid container spacing={1}>
+      <Grid item xs={3}>
+        <Table>
+          <tbody>
+            <tr>
+              <th>Username</th>
+              <td>{user.displayName}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{user.email}</td>
+            </tr>
+          </tbody>
+        </Table>
+      </Grid>
+      <Grid item xs={8}>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="My Cards" />
+          <Tab label="Favorited Cards" />
+        </Tabs>
+        {value === 0 && (
+          <div className="tabContainer">
+            <UserCard />
+          </div>
+        )}
+        {value === 1 && (
+          <div className="tabContainer">
+            <UserFavorite/>
+          </div>
+        )}
+      </Grid>
+    </Grid>
+  );
 }
 
-export default UserDetails;
+export default UserDetails

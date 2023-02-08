@@ -1,0 +1,19 @@
+.Occasion-Dropdown {
+    display: inline-block;
+    position: relative;
+    left: 78.5%;
+    margin-bottom: 1%;
+    }
+    
+    select {
+    padding: 8px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    appearance: none;
+    background-color: white;
+    }
+    
+    option {
+    padding: 12px;
+    }

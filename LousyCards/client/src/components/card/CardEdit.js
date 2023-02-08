@@ -1,38 +1,51 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fabric } from "fabric";
-import ButtonConfig from "./ButtonConfig";
+import ButtonConfig from "../ui/ButtonConfig";
 import './CardForm.css'
 import SaveCard from "./CardSubmit";
-import { getCardDetails } from "../../modules/cardManager";
-
+import { getCardDetails, getUserCards } from "../../modules/cardManager";
+let canvasClearCount = 0
 
 const CardEdit = (props) => {
     const [mycanvas, setCanvas] = useState(null);
+    const [userCards, setUserCards] = useState([true])
     const [card, setCard] = useState();
     const [userId, setUserId] = useState();
-    const [cardId, setCardId] = useState();
-  
+    const [cardId, setCardId] = useState(0);
+
+    const navigate = useNavigate();
+    
     useEffect(() => {
-      const userIdFromLocalStorage = localStorage.getItem("userId");
-      setUserId(Number(userIdFromLocalStorage));
+        if (!userCards.some(card => card?.id == cardId) && cardId != 0 && userCards[0] !== true) {
+            navigate("/");
+        }
+    }, [userCards, userId]);
+    
+    
+    useEffect(() => {
+        getUserCards().then(setUserCards);
+        const userIdFromLocalStorage = localStorage.getItem("userId");
+        setUserId(Number(userIdFromLocalStorage));
+        const pathArray = window.location.pathname.split('/');
+        setCardId(pathArray[pathArray.length - 1]);
     }, []);
 
     useEffect(() => {
-        const pathArray = window.location.pathname.split('/');
-        setCardId(pathArray[pathArray.length - 1]);
-      }, []);
-  
-    useEffect(() => {
-      const fetchCard = async () => {
-        try {
-          const cardDetails = await getCardDetails(cardId);
-          setCard(cardDetails);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchCard();
+        const fetchCard = async () => {
+            try {
+                if (cardId > 0) {
+                    const cardDetails = await getCardDetails(cardId);
+                    setCard(cardDetails)
+                };
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchCard();
+
+
     }, [userId, cardId]);
 
     const handleAddText = (canv) => {
@@ -376,30 +389,36 @@ const CardEdit = (props) => {
         canv.setActiveObject(textbox);
         return textbox;
     };
-  
+
+    const canvasSetter = () =>{
+        if (card) {
+            
+            const mainCanvas = new fabric.Canvas("mainCanvas", {
+                height: 400,
+                width: 600,
+                centeredScaling: true,
+                backgroundColor: "#ffede8",
+                preserveObjectStacking: true,
+                controlsAboveOverlay: true
+            });
+            mainCanvas.loadFromJSON(JSON.parse(card.cardDetails));
+            addNewText(mainCanvas)
+            addNewParty(mainCanvas)
+            addNewHeart(mainCanvas)
+            addNewKiss(mainCanvas)
+            addNewAww(mainCanvas)
+            addNewSurprise(mainCanvas)
+            addNewLol(mainCanvas)
+            addNewHands(mainCanvas)
+            addNewHurt(mainCanvas)
+            addNewHug(mainCanvas)
+
+            setCanvas(mainCanvas)
+        }
+    }
+
     useEffect(() => {
-      if (card) {
-        const mainCanvas = new fabric.Canvas("mainCanvas", {
-            height: 400,
-            width: 600,
-            centeredScaling: true,
-            backgroundColor: "#ffede8",
-            preserveObjectStacking: true,
-            controlsAboveOverlay: true
-        });
-        mainCanvas.loadFromJSON(JSON.parse(card.cardDetails));
-        setCanvas(mainCanvas);
-        addNewText(mainCanvas)
-        addNewParty(mainCanvas)
-        addNewHeart(mainCanvas)
-        addNewKiss(mainCanvas)
-        addNewAww(mainCanvas)
-        addNewSurprise(mainCanvas)
-        addNewLol(mainCanvas)
-        addNewHands(mainCanvas)
-        addNewHurt(mainCanvas)
-        addNewHug(mainCanvas)
-      }
+        canvasSetter()
     }, [card]);
 
     fabric.Object.prototype.transparentCorners = false;
@@ -445,17 +464,17 @@ const CardEdit = (props) => {
         ctx.drawImage(img, -size / 2, -size / 2, size, size);
         ctx.restore();
     }
-  
+
     return (
-      <>
-        <SaveCard cardId={cardId} card={card} canvas={mycanvas} />
-        <div className="canvas-container" id="my-canvas-container">
-          <ButtonConfig />
-          <canvas id="mainCanvas" />
-        </div>
-      </>
+        <>
+            <SaveCard cardId={cardId} card={card} canvas={mycanvas} />
+            <div className="canvas-container" id="my-canvas-container">
+                <ButtonConfig />
+                <canvas id="mainCanvas" />
+            </div>
+        </>
     );
-  };
-  
-  export default CardEdit;
-  
+};
+
+export default CardEdit;
+

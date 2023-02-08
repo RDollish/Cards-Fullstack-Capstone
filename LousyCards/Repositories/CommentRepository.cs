@@ -21,9 +21,11 @@ namespace LousyCards.Repositories
                 {
                     cmd.CommandText = @"
                     SELECT co.Id AS CommentId, co.Comment, co.CreatedAt, co.UserId, co.CardId,
-                    uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt
+                    uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+                    c.Id AS CardId, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     FROM Comment co
                     JOIN UserProfile uc ON co.UserId = uc.Id
+                    JOIN Card c ON co.CardId = c.Id
                     ORDER BY co.CreatedAt DESC";
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -43,6 +45,16 @@ namespace LousyCards.Repositories
                                     DisplayName = DbUtils.GetString(reader, "DisplayName"),
                                     Email = DbUtils.GetString(reader, "Email"),
                                     CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedAt")
+                                },
+                                Card = new Card()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CardId"),
+                                    Title = DbUtils.GetString(reader, "Title"),
+                                    ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
+                                    Description = DbUtils.GetString(reader, "Description"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    OccasionId = DbUtils.GetInt(reader, "OccasionId"),
+                                    UserId = DbUtils.GetInt(reader, "UserId"),
                                 }
                             });
                         }

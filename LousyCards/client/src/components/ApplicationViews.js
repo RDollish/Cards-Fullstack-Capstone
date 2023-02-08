@@ -25,9 +25,8 @@ export default function ApplicationViews({ isLoggedIn }) {
             <Route index
               element={isLoggedIn ? <CardList />
                 : <Navigate to="/login" />} />
-            <Route path=":id" element={<UserDetails />} />
           </Route>
-
+          <Route path="usercards" element={isLoggedIn ? <UserDetails /> : <Navigate to="/login"/>} />
           <Route path="addcard" element={isLoggedIn ? <CardForm /> : <Navigate to="/login" />} />
           <Route path="edit/*" element={isLoggedIn ? <CardEdit /> : <Navigate to="/login" />} />
 

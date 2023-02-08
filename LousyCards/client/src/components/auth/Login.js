@@ -18,9 +18,10 @@ export default function Login() {
   };
 
   return (
-    <Form onSubmit={loginSubmit}>
-      <fieldset>
-        <FormGroup>
+    
+    <Form className="login-form" onSubmit={loginSubmit}>
+      <fieldset className = "login">
+        <FormGroup className = "email">
           <Label for="email">Email</Label>
           <Input
             id="email"
@@ -29,7 +30,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </FormGroup>
-        <FormGroup>
+        <FormGroup className = "password">
           <Label for="password">Password</Label>
           <Input
             id="password"
@@ -38,7 +39,7 @@ export default function Login() {
           />
         </FormGroup>
         <FormGroup>
-          <Button>Login</Button>
+          <Button className="login">Login</Button>
         </FormGroup>
         <em>
           Not registered? <Link to="/register">Register</Link>

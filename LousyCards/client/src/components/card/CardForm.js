@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { fabric } from "fabric";
-import ButtonConfig from "./ButtonConfig";
+import ButtonConfig from "../ui/ButtonConfig";
 import './CardForm.css'
 import SaveCard from "./CardSubmit";
 
@@ -396,8 +396,8 @@ const CardForm = () => {
 
 
     const initCanvas = () => {
-        console.log(checker)
         if (checker === 0) {
+            
             const mainCanvas = new fabric.Canvas("mainCanvas", {
                 height: 400,
                 width: 600,
@@ -425,7 +425,6 @@ const CardForm = () => {
     };
 
     useEffect(() => {
-        console.log(`${checker} at initilization`)
         initCanvas();
     }, []);
 

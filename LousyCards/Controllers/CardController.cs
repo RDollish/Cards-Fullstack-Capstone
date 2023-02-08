@@ -2,11 +2,8 @@
 using LousyCards.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Security.Claims;
-using LousyCards.Models;
-using LousyCards.Repositories;
 
 namespace LousyCards.Controllers
 {
@@ -68,6 +65,15 @@ namespace LousyCards.Controllers
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Card card)
+        {
+            _cardRepository.Edit(id, card);
+            return NoContent();
+        }
+
 
         [Authorize]
         [HttpDelete("{id}")]

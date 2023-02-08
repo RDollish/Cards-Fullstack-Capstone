@@ -22,6 +22,46 @@ export const getAllFavorites = async () => {
   }
 };
 
+export const getCardFavorites = async (cardId) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/${cardId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get favorites.");
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserFavorites = async () => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/userfavorites`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get favorites.");
+    }
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const addFavorite = async (favorite) => {
     try {
       const token = await getToken();
