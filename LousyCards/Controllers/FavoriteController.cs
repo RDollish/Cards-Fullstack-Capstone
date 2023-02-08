@@ -36,6 +36,15 @@ namespace LousyCards.Controllers
         }
 
         [Authorize]
+        [HttpGet("userfavorites")]
+        public IActionResult GetUserFavorites()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            return Ok(_favoriteRepository.GetByUserId(firebaseUserId));
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Add(CardFavorite favorite)
         {

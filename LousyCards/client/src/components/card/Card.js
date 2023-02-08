@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 import { Card } from "reactstrap"
 import { Accordion, AccordionDetails, Dialog, Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { getAllFavorites, addFavorite, deleteFavorite } from "../../modules/favoriteManager";
+import { getCardFavorites, getUserFavorites, addFavorite, deleteFavorite } from "../../modules/favoriteManager";
 import { getAllComments, addComment, deleteComment } from "../../modules/commentManager";
-import { deleteCard } from "../../modules/cardManager";
+import { getUserCards, deleteCard, getAllCards } from "../../modules/cardManager";
+import { getUserDetailsById } from "../../modules/userProfileManager";
 
 export default function UserCard({ card }) {
   const [userId, setUserId] = useState();
+  const [user, setUser] = useState({});
   const [cardId, setCardId] = useState();
   const [favorited, setFavorited] = useState(false);
   const [cardComments, setCardComments] = useState([])
@@ -16,6 +17,22 @@ export default function UserCard({ card }) {
   const [newComment, setNewComment] = useState("");
   const [openCardDialog, setOpenCardDialog] = useState(false);
   const [openCommentDialog, setOpenCommentDialog] = useState(false);
+  const [userCards, setUserCards] = useState([]);
+  const [numberOfFavorites, setNumberOfFavorites] = useState(0);
+  const [numberOfComments, setNumberOfComments] = useState(0);
+
+  useEffect(() => {
+    const fetchUserCards = async () => {
+      try {
+        const cards = await getUserCards();
+        setUserCards(cards);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserCards();
+  }, []);
 
   const handleCardOpen = () => {
     setOpenCardDialog(true);
@@ -58,12 +75,21 @@ export default function UserCard({ card }) {
     setUserId(Number(userIdFromLocalStorage));
   }, []);
 
+  useEffect(() => {
+    if (userId !== undefined) {
+      getUserDetailsById(userId)
+        .then((userData) => {
+          setUser(userData);
+        })
+    };
+  }, [userId]);
+
+
   const navigate = useNavigate();
-  const handleTitleClick = (event) => {
-    navigate(`/cardDetails/${card.id}`)
-  }
+
   const handleEditClick = (event) => {
     navigate(`/edit/${card.id}`)
+    window.location.reload()
   }
 
   const toggleFavorite = async (e) => {
@@ -78,21 +104,25 @@ export default function UserCard({ card }) {
       };
 
       if (favorited) {
-        deleteFavorite(CardFavorite?.cardId, CardFavorite?.userId);;
+        deleteFavorite(CardFavorite?.cardId, CardFavorite?.userId);
+        const newNum = numberOfFavorites - 1
+        setNumberOfFavorites(newNum);
       } else {
         addFavorite(CardFavorite);
+        const newNum = numberOfFavorites + 1
+        setNumberOfFavorites(newNum);
       }
-
       setFavorited(!favorited);
     }
   };
 
-
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const allFavorites = await getAllFavorites();
-        const hasFavorited = allFavorites.filter(fav => fav.cardId === card.id);
+        const userFavorites = await getUserFavorites();
+        const allFavorites = await getCardFavorites(card.id);
+        const hasFavorited = userFavorites.filter(fav => fav.cardId === card.id);
+        setNumberOfFavorites(allFavorites.length);
         if (hasFavorited.length > 0) {
           setFavorited(true)
         };
@@ -107,12 +137,14 @@ export default function UserCard({ card }) {
   }, [userId, card.id]);
 
 
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
         const allComments = await getAllComments();
         setCardComments(allComments)
         const cardComments = allComments.filter(comment => comment?.card?.id === card?.id);
+        setNumberOfComments(cardComments.length)
         setCardComments(cardComments);
       } catch (error) {
         console.error(error);
@@ -132,11 +164,14 @@ export default function UserCard({ card }) {
     const comment = {
       userId: userId,
       cardId: card.id,
-      comment: newComment
+      comment: newComment,
     };
 
     try {
       await addComment(comment);
+      setNumberOfComments(numberOfComments + 1);
+      comment.userProfile = {displayName: user.displayName}
+      setCardComments([...cardComments, comment]);
     } catch (error) {
       console.error(error);
     }
@@ -152,7 +187,7 @@ export default function UserCard({ card }) {
       <h3>{card.title}</h3>
       <h4>{card.description}</h4>
       <div className="img">
-        <img src={card.imageUrl} alt={card.title} onClick={(clickEvent) => handleTitleClick(clickEvent)} />
+        <img src={card.imageUrl} alt={card.title} />
       </div>
       <p>
         Author: {card.userProfile.displayName} &emsp;
@@ -168,21 +203,23 @@ export default function UserCard({ card }) {
         <button
           className={`btn-favorite ${favorited ? "favorited" : ""}`}
           onClick={(e) => toggleFavorite(e)}
-        >
-          {favorited ? "❤️" : "🤍"}
+        ><span role="img" aria-label="speech bubble">
+            {favorited ? "❤️" : "🤍"}</span> {numberOfFavorites}
         </button>
         <button
           className="btn-comment"
           onClick={(e) => setOpen(!open)}
         >
-          💬
+          <span role="img" aria-label="speech bubble">💬</span> {numberOfComments}
         </button>
-
-        <button className="btn-edit"
-          onClick={(clickEvent) => handleEditClick(clickEvent)}>✏️</button>
-        <button className="btn-delete" onClick={handleCardOpen}>
-          ❌
-        </button>
+        {userCards.find(c => c.id === card.id) && (
+          <>
+            <button className="btn-edit"
+              onClick={(e) => handleEditClick(e)}><span>✏️</span></button>
+            <button className="btn-delete" onClick={handleCardOpen}><span>❌
+            </span></button>
+          </>
+        )}
         <Dialog
           open={openCardDialog}
           onClose={handleCardClose}
@@ -191,13 +228,13 @@ export default function UserCard({ card }) {
         >
           <DialogTitle id="alert-dialog-title">Are you sure you want to delete this card?</DialogTitle>
           <DialogContent>
-            <DialogContentText><img src={card.imageUrl} style={{ maxWidth: "100%", height: "auto" }}/></DialogContentText>
+            <DialogContentText><img src={card.imageUrl} style={{ maxWidth: "100%", height: "auto" }} /></DialogContentText>
             <br></br>
             <DialogContentText id="alert-dialog-description">
               This action cannot be undone.
             </DialogContentText>
           </DialogContent>
-          
+
           <DialogActions>
             <Button onClick={handleCardClose} color="primary">
               Cancel

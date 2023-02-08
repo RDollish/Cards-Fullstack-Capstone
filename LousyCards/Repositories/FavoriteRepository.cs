@@ -22,18 +22,18 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
+                        SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
 
-                  uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+                           uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
-                  c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                           c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     
-             FROM Favorite f
-                  JOIN UserProfile uc ON f.UserId = uc.Id
-                  JOIN Card c ON c.Id = f.CardId
-            WHERE c.CreatedAt <= SYSDATETIME()
-         ORDER BY c.CreatedAt DESC
-        ";
+                        FROM Favorite f
+                        JOIN UserProfile uc ON f.UserId = uc.Id
+                        JOIN Card c ON c.Id = f.CardId
+                        WHERE c.CreatedAt <= SYSDATETIME()
+                        ORDER BY c.CreatedAt DESC
+                    ";
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -56,7 +56,7 @@ namespace LousyCards.Repositories
                                 },
                                 Card = new Card()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "CardId"),
                                     Title = DbUtils.GetString(reader, "Title"),
                                     ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
                                     Description = DbUtils.GetString(reader, "Description"),
@@ -80,18 +80,19 @@ namespace LousyCards.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-           SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
+                        SELECT 
 
-                  uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+                        f.Id, f.UserId, f.CardId, f.CreatedAt,
 
-                  c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                        uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+
+                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     
-             FROM Favorite f
-                  JOIN UserProfile uc ON f.UserId = uc.Id
-                  JOIN Card c ON c.Id = f.CardId
-            WHERE c.CreatedAt <= SYSDATETIME()
-         ORDER BY c.CreatedAt DESC
-        ";
+                        FROM Favorite f
+                        JOIN UserProfile uc ON f.UserId = uc.Id
+                        JOIN Card c ON c.Id = f.CardId
+                        WHERE c.id = @cardId
+                    ";
 
                     cmd.Parameters.AddWithValue("@cardId", cardId);
 
@@ -116,7 +117,7 @@ namespace LousyCards.Repositories
                                 },
                                 Card = new Card()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "CardId"),
                                     Title = DbUtils.GetString(reader, "Title"),
                                     ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
                                     Description = DbUtils.GetString(reader, "Description"),
@@ -132,6 +133,71 @@ namespace LousyCards.Repositories
                 }
             }
         }
+        public List<CardFavorite> GetByUserId(string firebaseUserId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT f.Id, f.UserId, f.CardId, f.CreatedAt,
+
+                        uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
+
+                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                        
+                            FROM Favorite f
+                            JOIN UserProfile uc ON f.UserId = uc.Id
+                            JOIN Card c ON c.Id = f.CardId
+                            WHERE uc.FireBaseUserId = @firebaseUserId AND c.CreatedAt <= SYSDATETIME()
+                            ORDER BY c.CreatedAt DESC
+                    ";
+
+                    cmd.Parameters.AddWithValue("@firebaseUserId", firebaseUserId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var favorites = new List<CardFavorite>();
+                        while (reader.Read())
+                        {
+                            favorites.Add(new CardFavorite()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                UserId = DbUtils.GetInt(reader, "UserId"),
+                                CardId = DbUtils.GetInt(reader, "CardId"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                UserProfile = new UserProfile()
+                                {
+                                    FirebaseUserId = DbUtils.GetString(reader, "FireBaseUserId"),
+                                    DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedAt")
+                                },
+                                Card = new Card()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CardId"),
+                                    Title = DbUtils.GetString(reader, "Title"),
+                                    ImageUrl = DbUtils.GetString(reader, "ImageUrl"),
+                                    Description = DbUtils.GetString(reader, "Description"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    OccasionId = DbUtils.GetInt(reader, "OccasionId"),
+                                    UserId = DbUtils.GetInt(reader, "UserId"),
+                                    UserProfile = new UserProfile()
+                                    {
+                                        DisplayName = DbUtils.GetString(reader, "DisplayName")
+                                    }
+                                }
+                            });
+                        }
+
+                        return favorites;
+                    }
+                }
+            }
+        }
+
+
         public void Add(CardFavorite favorite)
         {
             using (var conn = Connection)

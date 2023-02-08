@@ -55,7 +55,6 @@ export const getUserCards = async () => {
     if (!response.ok) {
       throw new Error("An unknown error occurred while trying to get cards.");
     }
-
     return response.json();
   } catch (error) {
     throw error;
@@ -101,7 +100,7 @@ export const editCard = async (id, card) => {
       throw new Error("An error occurred while trying to edit a card.");
     }
 
-    console.log("Card edited successfully!");
+    return response;
   } catch (error) {
     throw error;
   }
@@ -116,11 +115,10 @@ export const deleteCard = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     if (!response.ok) {
       throw new Error("An error occurred while trying to delete the card.");
     }
-
+    
     console.log("Card deleted successfully!");
   } catch (error) {
     throw error;

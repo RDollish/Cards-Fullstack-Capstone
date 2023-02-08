@@ -1,27 +1,20 @@
-form {
+form.login-form {
     width: 400px;
     margin: 100px auto;
     text-align: center;
     font-family: Arial, sans-serif;
   }
 
-  fieldset {
+ .login {
     border: none;
     padding: 20px;
   }
 
-  legend {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
 
   label {
     display: block;
     font-size: 18px;
+    margin-top:10px;
     margin-bottom: 10px;
   }
 
@@ -34,7 +27,7 @@ form {
     border-radius: 5px;
   }
 
-  button {
+  button.login.btn {
     width: 106%;
     padding: 10px;
     background-color: #333;
@@ -49,7 +42,7 @@ form {
     margin: auto;
     }
 
-  button:hover {
+  button.login.btn:hover {
     background-color: #555;
   }
 

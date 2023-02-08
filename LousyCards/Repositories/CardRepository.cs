@@ -57,7 +57,7 @@ namespace LousyCards.Repositories
                                 },
                                 Occasion = new Occasion()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "OccasionId"),
                                     Name = DbUtils.GetString(reader, "Name")
                                 },
                                 CardDetails = DbUtils.GetString(reader, "CardDetails")
@@ -111,7 +111,7 @@ namespace LousyCards.Repositories
                                 },
                                 Occasion = new Occasion()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "OccasionId"),
                                     Name = DbUtils.GetString(reader, "Name")
                                 },
                                 CardDetails = DbUtils.GetString(reader, "CardDetails")
@@ -142,7 +142,7 @@ namespace LousyCards.Repositories
          ORDER BY c.CreatedAt DESC
         ";
 
-                    DbUtils.AddParameter(cmd, "@firebaseUserId", firebaseUserId);
+                    cmd.Parameters.AddWithValue("@firebaseUserId", firebaseUserId);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -167,7 +167,7 @@ namespace LousyCards.Repositories
                                 },
                                Occasion = new Occasion()
                                 {
-                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    Id = DbUtils.GetInt(reader, "OccasionId"),
                                     Name = DbUtils.GetString(reader, "Name")
                                 },
                                 CardDetails = DbUtils.GetString(reader, "CardDetails")
@@ -224,6 +224,38 @@ namespace LousyCards.Repositories
                 }
             }
         }
+        public void Edit(int id, Card card)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                UPDATE Card 
+                SET Title = @Title,
+                    Description = @Description,
+                    ImageUrl = @ImageUrl,
+                    OccasionId = @OccasionId,
+                    UserId = @UserId,
+                    CardDetails = @CardDetails
+                WHERE Id = @Id
+            ";
+
+                    DbUtils.AddParameter(cmd, "@Title", card.Title);
+                    DbUtils.AddParameter(cmd, "@Description", card.Description);
+                    DbUtils.AddParameter(cmd, "@ImageUrl", card.ImageUrl);
+                    DbUtils.AddParameter(cmd, "@OccasionId", card.OccasionId);
+                    DbUtils.AddParameter(cmd, "@UserId", card.UserId);
+                    DbUtils.AddParameter(cmd, "@CardDetails", card.CardDetails);
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void Delete(int id)
         {
             using (SqlConnection conn = Connection)

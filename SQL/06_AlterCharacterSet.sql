@@ -1,0 +1,1 @@
+ALTER TABLE LousyCards.dbo.Card ALTER COLUMN CardDetails NVARCHAR(MAX);

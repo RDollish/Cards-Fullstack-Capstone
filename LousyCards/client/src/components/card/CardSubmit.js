@@ -38,13 +38,8 @@ export default function SaveCard(props) {
     });
   }, []);
 
-  const registerClick = async (e) => {
-    e.preventDefault();
-    
-    setImageUrl(canvas.toDataURL('png'));
-
-    setCardDetails(JSON.stringify(canvas.toJSON()));
-    if (imageUrl && cardDetails != null) {
+  useEffect(() => {
+    if (imageUrl && cardDetails !== null) {
       const Card = {
         title,
         description,
@@ -54,13 +49,20 @@ export default function SaveCard(props) {
         cardDetails
       };
       if (card) {
-        editCard(cardId, Card).then(() => navigate("/"));
+        editCard(cardId, Card).then(() => [navigate("/")]);
       } else {
-        addCard(Card).then(() => navigate("/"));
+        addCard(Card).then(() => [ navigate("/")]);
       }
     }
+  }, [imageUrl, cardDetails]);
+
+  const registerClick = async (e) => {
+    e.preventDefault();
+    setImageUrl(canvas.toDataURL('png'));
+    setCardDetails(JSON.stringify(canvas.toJSON()));
   };
 
+  
 
     return (
     <Form onSubmit={registerClick}>
@@ -74,7 +76,7 @@ export default function SaveCard(props) {
           />
         </FormGroup>
         <FormGroup>
-  <Input type="select" id="occasion" onChange={(e) => setOccasion(Number(e.target.value))}>
+  <Input type="select" id="occasion" value={occasionId} defaultValue={occasionId} onChange={(e) => setOccasion(Number(e.target.value))}>
   <option value="">Select an Occasion</option>
     {occasions.map(occ => (
     <option key ={occ.id} value={occ.id}>{occ.name}</option>
