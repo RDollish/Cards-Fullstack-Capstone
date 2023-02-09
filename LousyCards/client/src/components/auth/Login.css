@@ -1,54 +1,80 @@
-form.login-form {
-    width: 400px;
-    margin: 100px auto;
-    text-align: center;
-    font-family: Arial, sans-serif;
+.Login body {
+  background-image: url(/src/assets/background.png);
+}
+
+div.envelope {
+  background-image: url(/src/assets/envelope.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  
+  width: 92.5%;
   }
 
- .login {
-    border: none;
-    padding: 20px;
+.login-form {
+  width: 40%;
+  padding: 10%;
+  margin: 1% auto;
+
+  font-family: monospace, sans-serif;
+}
+.register-form {
+  margin-right: 80%;
+  margin-top: 20%;
+}
+
+fieldset {
+  margin-top: -25%;
+  margin-left: 118%;
+  margin-bottom: 5%;
+  padding: 5%;
+  border: transparent;
+  background: transparent;
+}
+
+label {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.input[type="text"],
+.input[type="password"] {
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button.login.btn {
+  background-color: #333;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  margin-left: 25px;
   }
-
-
-  label {
-    display: block;
-    font-size: 18px;
-    margin-top:10px;
-    margin-bottom: 10px;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  button.login.btn {
-    width: 106%;
-    padding: 10px;
-    background-color: #333;
-    color: #fff;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    }
 
   button.login.btn:hover {
-    background-color: #555;
-  }
+  background-color: #555;
+}
 
-  em {
-    display: block;
-    font-size: 14px;
-    margin-top: 20px;
-    text-align: center;
-  }
+.Login em {
+  width: 100%;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+canvas.login-canvas,
+canvas.lower-canvas.login-canvas,
+canvas.upper-canvas.login-canvas {
+  margin-top: 117px;
+  margin-left: 125px;
+}

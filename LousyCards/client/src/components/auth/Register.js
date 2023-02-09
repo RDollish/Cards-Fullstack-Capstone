@@ -25,7 +25,7 @@ export default function Register() {
   };
 
   return (
-    <Form onSubmit={registerClick}>
+    <Form className ="register-form" onSubmit={registerClick}>
       <fieldset>
         <FormGroup>
           <Label htmlFor="userName">Username</Label>
@@ -60,7 +60,7 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Button>Register</Button>
+          <Button className ="register">Register</Button>
         </FormGroup>
       </fieldset>
     </Form>
