@@ -28,7 +28,7 @@ namespace LousyCards.Repositories
 
                            c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
                     
-                        FROM Favorite f
+                        FROM Favorite fgit a
                         JOIN UserProfile uc ON f.UserId = uc.Id
                         JOIN Card c ON c.Id = f.CardId
                         WHERE c.CreatedAt <= SYSDATETIME()
@@ -86,11 +86,13 @@ namespace LousyCards.Repositories
 
                         uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
-                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails, 
+                        o.Name as OccasionName, o.Id as OccasionId
                     
                         FROM Favorite f
                         JOIN UserProfile uc ON f.UserId = uc.Id
                         JOIN Card c ON c.Id = f.CardId
+                        JOIN Occasion o ON o.Id = c.OccasionId 
                         WHERE c.id = @cardId
                     ";
 
@@ -124,7 +126,13 @@ namespace LousyCards.Repositories
                                     CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
                                     OccasionId = DbUtils.GetInt(reader, "OccasionId"),
                                     UserId = DbUtils.GetInt(reader, "UserId"),
+                                    Occasion = new Occasion
+                                    {
+                                        Id = DbUtils.GetInt(reader, "OccasionId"),
+                                        Name = DbUtils.GetString(reader, "OccasionName")
+                                    }
                                 }
+
                             });
                         }
 
@@ -145,11 +153,13 @@ namespace LousyCards.Repositories
 
                         uc.FireBaseUserId, uc.DisplayName, uc.Email, uc.CreatedAt AS UserCreatedAt,
 
-                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails
+                        c.Id, c.Title, c.ImageUrl, c.CreatedAt, c.Description, c.UserId, c.OccasionId, c.CardDetails,
+                        o.Name as OccasionName, o.Id as OccasionId
                         
                             FROM Favorite f
                             JOIN UserProfile uc ON f.UserId = uc.Id
                             JOIN Card c ON c.Id = f.CardId
+                            JOIN Occasion o ON o.Id = c.OccasionId 
                             WHERE uc.FireBaseUserId = @firebaseUserId AND c.CreatedAt <= SYSDATETIME()
                             ORDER BY c.CreatedAt DESC
                     ";
@@ -183,6 +193,11 @@ namespace LousyCards.Repositories
                                     CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
                                     OccasionId = DbUtils.GetInt(reader, "OccasionId"),
                                     UserId = DbUtils.GetInt(reader, "UserId"),
+                                    Occasion = new Occasion()
+                                    {
+                                        Id = DbUtils.GetInt(reader, "OccasionId"),
+                                        Name = DbUtils.GetString(reader, "OccasionName")
+                                    },
                                     UserProfile = new UserProfile()
                                     {
                                         DisplayName = DbUtils.GetString(reader, "DisplayName")

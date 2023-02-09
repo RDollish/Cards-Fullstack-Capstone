@@ -65,8 +65,8 @@ export default function SaveCard(props) {
   
 
     return (
-    <Form onSubmit={registerClick}>
-      <fieldset>
+    <Form className="card-form-fields" onSubmit={registerClick}>
+      <fieldset className="card-form-fields">
         <FormGroup>
           <Input
             id="title"

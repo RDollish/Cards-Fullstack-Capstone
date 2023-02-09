@@ -1,4 +1,4 @@
-button {
+.CardForm button {
     padding: 10px 20px;
     margin: 10px 0;
     font-size: 18px;
@@ -28,55 +28,70 @@ button {
     background-color: transparent;
     position: absolute;
     left: 0;
+    font-family: monospace, sans-serif;
     top: 0;
     bottom: 0;
     z-index: 2;
-    padding-top: 5rem;
+    margin-top: 50px;
+    padding-top: 65px;
 }
 
 .canvas-container, .my-canvas-container {
-    width: auto;
-    height: auto;
+    width: 0px;
+    height: 0px;
+    margin-top: -500px;
 }
-
-
 
 canvas {
     border: 2px solid black;
     /* display: absolute; */
     border-radius: 20px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    margin-top: -525px;
-    margin-left: 337px;
+    margin-top: 20px;
+    margin-left: 358px;
 }
 
-form {
+form.card-form-fields {
     margin: 0;
+}
+
+fieldset.card-form-fields {
+    margin-top: -200px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    padding-bottom: 0px;
+    padding-left: 50px;
+
 }
 
 #title {
     width: auto;
     left: 0;
+    margin-top: 160px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 325px;
+    margin-left: 485px;
+    font-family: monospace, sans-serif;
+    font-size: larger;
 }
 
 #description {
     width: auto;
+    font-family: monospace, sans-serif;
     min-width: 580px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-top: 410px;
+    margin-top: 430px;
     margin-left: 317px;
+    font-size: larger;
 }
 
 #occasion {
-    width: 15%;
-    margin-top: -600px;
-    margin-left: 780px;
+    width: auto;
+    margin-top: 10px;
+    margin-left: 728px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
@@ -90,4 +105,5 @@ form {
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
     margin-left: 395px;
+    font-family: monospace, sans-serif;
 }

@@ -1,35 +1,121 @@
-.navbar {
-    background-color: #ffdee3;;
-    padding-bottom: 3rem;
-    z-index: 1;
+
+Header div.MuiToolbar-root {
+  background-color: #ffdee3;
+  border: 5px dashed black;
+  color:black;
+  box-shadow: none;
+}
+
+Header {
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: none;
+}
+
+body {
+  background-color: #fceaed;
+
+    background-image: url(/src/assets/background.png);
+    background-size: 105.3%;
+
+}
+
+Header .MuiTypography {
+  word-wrap: break-word;
+
+}
+
+Header .logo {
+  background-image: url(/src/assets/stamp.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-clip: border-box;
+  color: transparent;
   }
-  
-  .navbar .nav-item {
-    display: inline-block;
-    float: left;
-  }
-  
-  .navbar .nav-link {
-    display: block;
-    padding: 10px 15px;
-  }
-  
-  .navbar-brand {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    display: inline-block;
-    float: left;
-  }
-  
-  .nav-item {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
-  .nav-link {
-    font-size: 18px;
-    color: #333;
-    text-transform: lowercase;
-  }
-  
+
+
+Header .home,
+Header .profile,
+Header .make {
+  color: white;
+  text-decoration: none;
+  font-size: larger;
+  word-wrap: break-word;
+  width: 100%;
+  padding: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+Header .blank{
+  width: 80.6%;
+  color: transparent;
+}
+
+Header .logout{
+  color: rgb(0, 0, 0);
+  width: 20%;
+  text-decoration: none;
+  font-size: larger;
+  word-wrap: break-word;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+Header .login,
+Header .register{
+  color: white;
+  text-decoration: none;
+  font-size: larger;
+  word-wrap: break-word;
+  width: 100%;
+  padding: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+Header .home,
+Header .profile,
+Header .make,
+Header .logout,
+Header .login,
+Header .register {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+Header .logout {
+  margin-left: auto;
+}
+
+Header .home:hover,
+Header .profile:hover,
+Header .make:hover,
+Header .login:hover,
+Header .register:hover,
+Header .logout:hover {
+  text-decoration: none;
+  background: radial-gradient(circle, #ffeef0 0%, transparent 80%);
+}
+

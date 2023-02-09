@@ -4,13 +4,12 @@ import { Card } from "reactstrap"
 import { Accordion, AccordionDetails, Dialog, Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { getCardFavorites, getUserFavorites, addFavorite, deleteFavorite } from "../../modules/favoriteManager";
 import { getAllComments, addComment, deleteComment } from "../../modules/commentManager";
-import { getUserCards, deleteCard, getAllCards } from "../../modules/cardManager";
+import { getUserCards, deleteCard } from "../../modules/cardManager";
 import { getUserDetailsById } from "../../modules/userProfileManager";
 
 export default function UserCard({ card }) {
   const [userId, setUserId] = useState();
   const [user, setUser] = useState({});
-  const [cardId, setCardId] = useState();
   const [favorited, setFavorited] = useState(false);
   const [cardComments, setCardComments] = useState([])
   const [open, setOpen] = React.useState(false);
@@ -96,7 +95,6 @@ export default function UserCard({ card }) {
     e.preventDefault();
 
     if (userId) {
-      setCardId(card.id);
 
       const CardFavorite = {
         userId,
@@ -183,7 +181,7 @@ export default function UserCard({ card }) {
 
   return (
 
-    <Card className="m-5 text-center">
+    <Card className={card?.occasion?.name}>
       <h3>{card.title}</h3>
       <h4>{card.description}</h4>
       <div className="img">
@@ -228,7 +226,7 @@ export default function UserCard({ card }) {
         >
           <DialogTitle id="alert-dialog-title">Are you sure you want to delete this card?</DialogTitle>
           <DialogContent>
-            <DialogContentText><img src={card.imageUrl} style={{ maxWidth: "100%", height: "auto" }} /></DialogContentText>
+            <DialogContentText><img src={card.imageUrl} alt="delete" style={{ maxWidth: "100%", height: "auto" }} /></DialogContentText>
             <br></br>
             <DialogContentText id="alert-dialog-description">
               This action cannot be undone.

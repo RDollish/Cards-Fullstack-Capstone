@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fabric } from "fabric";
 import ButtonConfig from "../ui/ButtonConfig";
 import './CardForm.css'

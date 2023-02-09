@@ -6,7 +6,9 @@
 }
 
 .card {
+    border: 5px dashed black;
     display: flex;
+      font-family: monospace, sans-serif;
     flex-direction: column;
     width: calc(38% - 20px);
     margin-bottom: 40px;
@@ -18,6 +20,9 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     cursor: pointer;
+}
+h1{
+    font-family: monospace, sans-serif;
 }
 
 @keyframes bounce {
@@ -43,25 +48,31 @@
     margin-top: 20px;
     font-size: 22px;
     color: rgb(129, 61, 61);
+    border-radius: 20px;
 }
 
 .card h4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 5px;
     height: 42px;
     font-size: 12px;
     color: rgb(129, 61, 61);
     margin-bottom: 0px;
+    border-radius: 20px;
 }
 
 .card img {
     width: 80%;
     margin: 20px auto;
-    border: dotted white;
+    border: 5px dashed black;
 }
 
 .card p {
     font-size: 16px;
     color: rgb(129, 61, 61);
+    border-radius: 20px;
 }
 
 .card-author {
@@ -78,7 +89,7 @@
     width: 100%;
 }
 
-button {
+.Card button {
     border: 1px solid white;
     border-radius: 4px;
     padding: 5px 10px;
@@ -89,33 +100,34 @@ button {
     font-size: 16px;
 }
 
-button:hover {
+.Card button:hover {
     background: radial-gradient(circle, rgba(248, 104, 104, 0.8) 0%, transparent 80%);
     color: rgb(165, 47, 47);
 }
 
 p {
-    background-color: #fec1c9;
     border-radius: 10px;
 }
 
-  
+
 .comments p {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .delete-icon {
-    margin-left: auto;
-  }
+}
 
-span::first-letter{
+.delete-icon {
+    margin-left: auto;
+}
+
+span::first-letter {
     font-size: 28px;
 }
-  
+
 .btn-favorite,
-.btn-comment, .btn-edit, .btn-delete {
+.btn-comment,
+.btn-edit,
+.btn-delete {
     color: rgb(165, 47, 47);
     margin-left: 20px;
     margin-right: 20px;
@@ -126,16 +138,31 @@ span::first-letter{
     outline: none;
     background-color: transparent;
     cursor: pointer;
-    float: left;
+    float: right;
     text-align: center;
     border-radius: 50%;
+      color: white;
+  text-decoration: none;
+  font-size: larger;
+  word-wrap: break-word;
+  padding: 10px;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 
 }
 
 
-.btn-favorite:hover
-.btn-comment:hover, .btn-edit:hover,
-.btn-delete:hover, span:hover {
+.btn-favorite:hover .btn-comment:hover,
+.btn-edit:hover,
+.btn-delete:hover,
+span:hover {
     background: radial-gradient(circle, rgba(248, 104, 104, 0.8) 0%, transparent 80%);
 }
 
@@ -157,7 +184,7 @@ span::first-letter{
     align-items: center;
 }
 
-form.input-container{
+form.input-container {
     width: auto;
 }
 
@@ -167,4 +194,136 @@ button.post-comment-button {
     align-items: center;
     background-color: rgb(254, 88, 88);
     color: white;
+}
+
+div.Congratulations.card {
+    background-image: url(./cardbackgrounds/congratulations.jpg);
+    background-size: 2000px 1800px;
+}
+
+div.Congratulations.card h3,
+div.Congratulations.card h4,
+div.Congratulations.card p {
+    color: rgb(0, 18, 34);
+    background-color: rgb(240, 255, 255);
+}
+
+div.Sympathy.card {
+    background-image: url(./cardbackgrounds/sympathy.jpg);
+}
+
+div.Sympathy.card h3,
+div.Sympathy.card h4,
+div.Sympathy.card p {
+    color: rgb(7, 0, 34);
+    background-color: aliceblue;
+}
+
+div.Just.Because.card {
+    background-image: url(./cardbackgrounds/justbecause.jpg);
+    background-size: 1080px 500px;
+}
+
+div.Just.Because.card h3,
+div.Just.Because.card h4,
+div.Just.Because.card p {
+    color: rgb(34, 15, 0);
+    background-color: rgb(255, 248, 228);
+}
+
+div.Thanksgiving.card {
+    background-image: url(./cardbackgrounds/thanksgiving.jpg);
+    background-size: 1080px 600px;
+}
+
+div.Thanksgiving.card h3,
+div.Thanksgiving.card h4,
+div.Thanksgiving.card p {
+    color: rgb(34, 15, 0);
+    background-color: rgb(255, 248, 228);
+}
+
+div.Birthday.card {
+    background-image: url(./cardbackgrounds/birthday.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Birthday.card h3,
+div.Birthday.card h4,
+div.Birthday.card p {
+    color: rgb(0, 8, 34);
+    background-color: rgb(247, 255, 228);
+}
+
+div.Valentine\'s.Day.card {
+    background-image: url(./cardbackgrounds/valentines.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Valentine\'s.Day.card h3,
+div.Valentine\'s.Day.card h4,
+div.Valentine\'s.Day.card p {
+    color: rgb(34, 0, 25);
+    background-color: rgb(255, 232, 228);
+}
+
+div.Mother\'s.Day.card {
+    background-image: url(./cardbackgrounds/mothersday.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Mother\'s.Day.card h3,
+div.Mother\'s.Day.card h4,
+div.Mother\'s.Day.card p {
+    color: rgb(34, 0, 25);
+    background-color: rgb(255, 228, 232);
+}
+
+div.Father\'s.Day.card {
+    background-image: url(./cardbackgrounds/fathersday.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Father\'s.Day.card h3,
+div.Father\'s.Day.card h4,
+div.Father\'s.Day.card p {
+    color: rgb(1, 0, 34);
+    background-color: rgb(228, 229, 255);
+
+}
+
+div.Christmas.card {
+    background-image: url(./cardbackgrounds/christmas.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Christmas.card h3,
+div.Christmas.card h4,
+div.Christmas.card p {
+    color: rgb(32, 34, 0);
+    background-color: rgb(247, 255, 228);
+}
+
+div.Anniversary.card {
+    background-image: url(./cardbackgrounds/anniversary.jpg);
+    background-size: 1080px 800px;
+}
+
+div.Anniversary.card h3,
+div.Anniversary.card h4,
+div.Anniversary.card p {
+    color: rgb(34, 33, 0);
+    background-color: rgb(255, 254, 228);
+}
+
+div.New.Year\'s.card {
+    background-image: url(./cardbackgrounds/newyears.jpg);
+    background-size: 680px 750px;
+}
+
+div.New.Year\'s.card h3,
+div.New.Year\'s.card h4,
+div.New.Year\'s.card p {
+    color: rgb(21, 21, 21);
+    background-color: rgb(238, 238, 238);
 }
