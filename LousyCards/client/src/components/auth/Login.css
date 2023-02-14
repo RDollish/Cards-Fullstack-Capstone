@@ -1,33 +1,38 @@
-.Login body {
-  background-image: url(/src/assets/background.png);
+body.login {
+  background-color: #fceaed;
+    background-position-y: 70px;
+    background-image: url(/src/assets/background.png);
+    background-size: 105.3%;
 }
 
 div.envelope {
+  display: flex;
   background-image: url(/src/assets/envelope.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
-  
-  width: 92.5%;
+  margin-top: 50px;
+  margin-right: 30px;
+  height:350px;
   }
 
 .login-form {
-  width: 40%;
-  padding: 10%;
-  margin: 1% auto;
-
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 100px;
   font-family: monospace, sans-serif;
 }
+
+div.email, div.password{
+  margin-bottom: 15px;
+}
+
 .register-form {
   margin-right: 80%;
   margin-top: 20%;
 }
 
 fieldset {
-  margin-top: -25%;
-  margin-left: 118%;
-  margin-bottom: 5%;
-  padding: 5%;
   border: transparent;
   background: transparent;
 }
@@ -65,16 +70,13 @@ button.login.btn {
   background-color: #555;
 }
 
-.Login em {
-  width: 100%;
-  font-size: 14px;
-  margin-top: 20px;
-  text-align: center;
-}
-
-canvas.login-canvas,
 canvas.lower-canvas.login-canvas,
 canvas.upper-canvas.login-canvas {
-  margin-top: 117px;
-  margin-left: 125px;
+  margin-top: 487px;
+  margin-left: 65px;
+}
+
+div.Login-register {
+  margin-top: 100px;
+  width: 65%
 }

@@ -1,11 +1,13 @@
-.CardForm button {
-    padding: 10px 20px;
+#btn-addText {
+    padding: 5px 10px;
     margin: 10px 0;
     font-size: 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    background: transparent;
 }
+
 
 #btn-addParty,
 #btn-addHeart,
@@ -39,7 +41,7 @@
 .canvas-container, .my-canvas-container {
     width: 0px;
     height: 0px;
-    margin-top: -500px;
+    margin-top: -480px;
 }
 
 canvas {
@@ -67,7 +69,7 @@ fieldset.card-form-fields {
 #title {
     width: auto;
     left: 0;
-    margin-top: 160px;
+    margin-top: 210px;
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
@@ -83,14 +85,14 @@ fieldset.card-form-fields {
     text-align: center;
     border-radius: 20px;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    margin-top: 430px;
+    margin-top: 408px;
     margin-left: 317px;
     font-size: larger;
 }
 
 #occasion {
     width: auto;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-left: 728px;
     text-align: center;
     border-radius: 20px;
@@ -98,7 +100,6 @@ fieldset.card-form-fields {
 }
 
 #save {
-    /* position: absolute; */
     margin-top: 5px;
     width: 450px;
     text-align: center;
@@ -107,3 +108,9 @@ fieldset.card-form-fields {
     margin-left: 395px;
     font-family: monospace, sans-serif;
 }
+
+.github-picker {
+    margin-left: 70%;
+    transform: rotate(90deg) translate(45%) scale(1, -1);
+  }
+  

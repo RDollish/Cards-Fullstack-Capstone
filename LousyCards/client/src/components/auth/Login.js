@@ -9,7 +9,7 @@ import { register } from "../../modules/authManager";
 
 export default function Login() {
   const navigate = useNavigate();
-
+  document.body.className = "login"
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [open, setOpen] = useState(false);
@@ -46,6 +46,7 @@ export default function Login() {
 
   return (
     <div className="envelope">
+      <LoginCanvas/>
       <Form className="login-form" onSubmit={loginSubmit}>
         <fieldset className="login">
           <FormGroup className="email">
@@ -68,9 +69,9 @@ export default function Login() {
           <FormGroup>
             <Button className="login">Login</Button>
           </FormGroup>
-          <em>
+          <div className="Login-register"><em>
             Not registered? <span onClick={handleClickOpen} style={{cursor: "pointer"}}>Register</span>
-          </em>
+            </em></div>
         </fieldset>
       </Form>
       <Dialog open={open} onClose={handleClose}>
@@ -117,7 +118,6 @@ export default function Login() {
           </Form>
         </DialogContent>
       </Dialog>
-      <LoginCanvas/>
     </div>
   )
 };

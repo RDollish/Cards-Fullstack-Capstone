@@ -146,7 +146,7 @@ export const LoginCanvas = () => {
 
     return (
         <>
-            <div className="login-container" id="my-login-container">
+            <div className="login-canvas-container" id="my-login-container">
 
             <canvas className="login-canvas" id="mainCanvas" width="600" height="400"></canvas>
             </div>

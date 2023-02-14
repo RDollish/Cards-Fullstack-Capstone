@@ -120,6 +120,47 @@ namespace LousyCards.Repositories
                 }
             }
         }
+
+        public List<CardComment> GetLastFiveByUserId(int userId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                SELECT top 5 c.Id, c.Comment, c.CreatedAt, c.CardId, c.UserId
+                FROM Comment c
+                WHERE c.UserId = @UserId
+                ORDER BY c.CreatedAt DESC";
+
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<CardComment> comments = new List<CardComment>();
+
+                        while (reader.Read())
+                        {
+                            comments.Add(new CardComment()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Comment = reader.GetString(reader.GetOrdinal("Comment")),
+                                CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                                CardId = reader.GetInt32(reader.GetOrdinal("CardId")),
+                                UserId = reader.GetInt32(reader.GetOrdinal("UserId"))
+                            });
+                        }
+
+                        reader.Close();
+
+                        return comments;
+                    }
+                }
+            }
+        }
+
         public void Add(CardComment comment)
         {
             using (var conn = Connection)

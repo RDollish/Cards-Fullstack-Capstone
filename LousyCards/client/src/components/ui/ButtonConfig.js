@@ -1,6 +1,6 @@
-
-
 function ConfigBtn(props) {
+  
+
     const btnClass = "fa fa-" + props.icon + " btn";
     return (
       <button 
@@ -17,7 +17,7 @@ function ButtonConfig() {
     return (
     <div className="navigation-bar">
       <div className="App-Config">         
-            <ConfigBtn icon="plus-circle" id="btn-addText" text=" TEXT"/>
+            <ConfigBtn icon="plus-circle" id="btn-addText" text="TEXT"/>
             <ConfigBtn icon="plus-circle" id="btn-addParty" text="🥳"/>
             <ConfigBtn icon="plus-circle" id="btn-addHeart" text="❤️"/>
             <ConfigBtn icon="plus-circle" id="btn-addKiss" text="😘"/>

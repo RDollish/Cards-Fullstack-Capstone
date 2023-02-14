@@ -14,9 +14,9 @@ Header {
 
 body {
   background-color: #fceaed;
-
-    background-image: url(/src/assets/background.png);
-    background-size: 105.3%;
+    /* background-position-y: 70px; */
+    /* background-image: url(/src/assets/background.png); */
+    /* background-size: 105.3%; */
 
 }
 

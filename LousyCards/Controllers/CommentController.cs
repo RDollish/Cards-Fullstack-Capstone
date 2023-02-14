@@ -34,6 +34,13 @@ namespace LousyCards.Controllers
         }
 
         [Authorize]
+        [HttpGet("{userId}/lastfive")]
+        public IActionResult GetLastFiveByUserId(int userId)
+        {
+            return Ok(_commentRepository.GetLastFiveByUserId(userId));
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Add(CardComment comment)
         {

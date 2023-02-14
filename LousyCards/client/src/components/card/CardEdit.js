@@ -5,6 +5,8 @@ import ButtonConfig from "../ui/ButtonConfig";
 import './CardForm.css'
 import SaveCard from "./CardSubmit";
 import { getCardDetails, getUserCards } from "../../modules/cardManager";
+import { GithubPicker } from "react-color";
+
 let canvasClearCount = 0
 
 const CardEdit = (props) => {
@@ -13,6 +15,7 @@ const CardEdit = (props) => {
     const [card, setCard] = useState();
     const [userId, setUserId] = useState();
     const [cardId, setCardId] = useState(0);
+    const [color, setColor] = useState('#000')
 
     const navigate = useNavigate();
     
@@ -465,6 +468,20 @@ const CardEdit = (props) => {
         ctx.restore();
     }
 
+    const handleColorChange = (newColor) => {
+        let activeObjects = mycanvas.getActiveObjects();
+        if (activeObjects.length === 0) {
+            mycanvas.setBackgroundColor(newColor.hex);
+            mycanvas.renderAll();
+        } else {
+            let activeTextArr = activeObjects.filter(e => e instanceof fabric.Textbox);
+            activeTextArr.forEach((e) => e.set("fill", newColor.hex));
+            mycanvas.renderAll();
+        }
+        setColor(newColor.hex);
+    };
+    
+
     return (
         <>
             <SaveCard cardId={cardId} card={card} canvas={mycanvas} />
@@ -472,6 +489,10 @@ const CardEdit = (props) => {
                 <ButtonConfig />
                 <canvas id="mainCanvas" />
             </div>
+            <GithubPicker
+          color={color}
+          onChange={handleColorChange}
+        />
         </>
     );
 };
