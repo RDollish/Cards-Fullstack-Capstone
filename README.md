@@ -43,4 +43,5 @@ To install and run the Card Maker application, follow these steps:
 * React
 * Material-UI
 * Fabric.js
+* react-color
 * C#/ASP.NET
