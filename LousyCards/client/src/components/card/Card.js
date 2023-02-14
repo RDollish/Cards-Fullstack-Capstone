@@ -58,9 +58,12 @@ export default function UserCard({ card }) {
     setOpenCommentDialog(false);
   };
 
-  const handleCommentDelete = (id) => {
-    deleteComment(id).then(() => {
+  const handleCommentDelete = (comment) => {
+    deleteComment(comment.id).then(() => {
       console.log("Comment deleted successfully!");
+      setNumberOfComments(numberOfComments - 1);
+      const newComments = cardComments.filter((com)=> com !== comment)
+      setCardComments(newComments);
     }).catch(error => {
       console.error(error);
     });
@@ -245,7 +248,7 @@ export default function UserCard({ card }) {
       </div>
       {open && (
         <Accordion>
-          <center><AccordionDetails style={{ backgroundColor: "#FFB6C1" }}>
+          <center><AccordionDetails style={{ backgroundColor: '#fceaed', cursor: "default" }}>
             <div className="comments">
               {cardComments.map(comment => (
                 <div key={comment.id}>
@@ -277,7 +280,7 @@ export default function UserCard({ card }) {
                       </Button>
                       <Button
                         onClick={() => {
-                          handleCommentDelete(comment.id);
+                          handleCommentDelete(comment);
                         }}
                         color="primary"
                         autoFocus
@@ -291,8 +294,20 @@ export default function UserCard({ card }) {
             </div>
 
             <form className="input-container" onSubmit={handleSubmit}>
-              <input type="text" placeholder="Write a comment" value={newComment} onChange={handleChange} />
-              <button className="post-comment-button">Post</button>
+            <textarea
+  placeholder="Write a comment"
+  value={newComment}
+  onChange={handleChange}
+  style={{
+    fontFamily: "monospace, sans-serif",
+    resize: "none",
+    overflow: "hidden",
+    width: "100%",
+    height: "100%",
+    marginBottom: "5px"
+  }}
+/>
+<button className="post-comment-button" style={{ fontFamily: "monospace, sans-serif", cursor: "pointer" }}>Post</button>
             </form>
           </AccordionDetails></center>
         </Accordion>

@@ -4,11 +4,14 @@ import { getUserDetailsById } from "../../modules/userProfileManager";
 import { Typography, Tabs, Tab, Grid } from "@mui/material";
 import UserCard from "../card/UserCard";
 import UserFavorite from "../card/UserFavorite";
+import { getLastFiveCommentsByUserId } from "../../modules/commentManager";
+import './UserDetails.css'
 
 const UserDetails = () => {
   const [value, setValue] = useState(0);
   const [userId, setUserId] = useState(0);
   const [user, setUser] = useState({});
+  const [userComments, setUserComments] = useState([]);
 
   useEffect(() => {
     const userIdFromLocalStorage = localStorage.getItem("userId");
@@ -16,34 +19,63 @@ const UserDetails = () => {
   }, []);
 
 
-useEffect(() => {
-  if (userId > 0) {
-    getUserDetailsById(userId)
-      .then((userData) => {
-        setUser(userData);
-      });
-  }
-}, [userId]);
+  useEffect(() => {
+    if (userId > 0) {
+      getUserDetailsById(userId)
+        .then((userData) => {
+          setUser(userData);
+          getLastFiveCommentsByUserId(userId)
+            .then((comments) => {
+              setUserComments(comments);
+            });
+        });
+    }
+  }, [userId]);
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={3}>
-        <Table>
-          <tbody>
-            <tr>
-              <th>Username</th>
-              <td>{user.displayName}</td>
-            </tr>
-            <tr>
-              <th>Email</th>
-              <td>{user.email}</td>
-            </tr>
-          </tbody>
-        </Table>
-      </Grid>
+<Grid container spacing={1}>
+  <Grid item xs={2.5}>
+    <Table>
+      <tbody>
+        <tr>
+          <th style={{ fontFamily: "monospace, sans-serif"}}>Username</th>
+          <td style={{ fontFamily: "monospace, sans-serif"}}>{user.displayName}</td>
+        </tr>
+        <tr>
+          <th style={{ fontFamily: "monospace, sans-serif"}}>Email</th>
+          <td style={{ fontFamily: "monospace, sans-serif"}}>{user.email}</td>
+        </tr>
+        <tr>
+          <td colSpan={2} style={{ fontFamily: "monospace, sans-serif"}}><b>Your Recent Comments:</b></td>
+        </tr>
+        {userComments.map((comment) => (
+          <tr key={comment.id}>
+            <td colSpan={2} className="comments" style={{ fontFamily: "monospace, sans-serif"}}>{comment.comment}</td>
+          </tr>
+        ))}
+        <tr>
+          <td colSpan={2} className="comments" style={{ fontFamily: "monospace, sans-serif"}}>Wow, I should hire Renée Doll!</td>
+        </tr>
+        <tr>
+          <td colSpan={2} className="comments" style={{ fontFamily: "monospace, sans-serif"}}>Here's how to reach her:</td>
+        </tr>
+        <tr>
+          <td colSpan={2} className="comments" style={{ fontFamily: "monospace, sans-serif"}}>
+            <a href="https://www.linkedin.com/in/ren%C3%A9e-doll/">LinkedIn</a>
+          </td>
+        </tr>
+        <tr>
+          <td colSpan={2} className="comments" style={{ fontFamily: "monospace, sans-serif"}}>
+            <a href="https://github.com/RDollish">Github</a>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
+  </Grid>
       <Grid item xs={8}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="My Cards" />

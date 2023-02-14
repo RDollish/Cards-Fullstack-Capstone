@@ -22,6 +22,27 @@ export const getAllComments = async () => {
   }
 };
 
+export const getLastFiveCommentsByUserId = async (userId) => {
+  try {
+    const token = await getToken();
+    const response = await fetch(`${apiUrl}/${userId}/lastfive`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("An unknown error occurred while trying to get comments.");
+    }
+
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const addComment = async (comment) => {
     try {
       const token = await getToken();

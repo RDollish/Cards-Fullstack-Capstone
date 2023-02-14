@@ -3,10 +3,13 @@ import { fabric } from "fabric";
 import ButtonConfig from "../ui/ButtonConfig";
 import './CardForm.css'
 import SaveCard from "./CardSubmit";
+import { GithubPicker } from "react-color";
 
 
 
-const CardForm = () => {
+const CardForm = (props) => {
+
+    const [color, setColor] = useState('#000')
     let checker = 0
     const [mycanvas, setCanvas] = useState("");
 
@@ -415,7 +418,8 @@ const CardForm = () => {
             addNewLol(mainCanvas)
             addNewHands(mainCanvas)
             addNewHurt(mainCanvas)
-            addNewHug(mainCanvas)
+            addNewHug(mainCanvas);
+            // changeTextColor(mainCanvas);
 
 
             checker = checker + 1
@@ -472,14 +476,31 @@ const CardForm = () => {
         ctx.restore();
     }
 
+    const handleColorChange = (newColor) => {
+        let activeObjects = mycanvas.getActiveObjects();
+        if (activeObjects.length === 0) {
+            mycanvas.setBackgroundColor(newColor.hex);
+            mycanvas.renderAll();
+        } else {
+            let activeTextArr = activeObjects.filter(e => e instanceof fabric.Textbox);
+            activeTextArr.forEach((e) => e.set("fill", newColor.hex));
+            mycanvas.renderAll();
+        }
+        setColor(newColor.hex);
+    };
+
     return (
         <>
         <SaveCard canvas={mycanvas} />
             <div className="canvas-container" id="my-canvas-container">
                 <ButtonConfig />
-
                 <canvas id="mainCanvas" ></canvas>
             </div>
+            <GithubPicker
+          color={color}
+          onChange={handleColorChange}
+          colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#1273DE', '#004DCF', '#5300EB', '#000000', '#EB9694', '#FAD0C3', '#FEF3BD', '#C1E1C5', '#C4DEF6', '#BED3F3', '#D4C4FB', '#FFFFFF']}
+        />
         </>
     );
 };

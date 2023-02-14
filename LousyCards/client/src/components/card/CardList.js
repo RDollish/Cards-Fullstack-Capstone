@@ -6,6 +6,7 @@ import { OccasionDropdown } from "../ui/OccasionDropdown";
 import { Pagination } from "../ui/Pagination";
 
 export default function CardList() {
+  document.body.className = ""
   const [cards, setCards] = useState([]);
   const [selectedOccasion, setSelectedOccasion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);

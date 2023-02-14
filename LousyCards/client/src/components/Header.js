@@ -20,10 +20,10 @@ export default function Header({ isLoggedIn }) {
           {isLoggedIn ? (
             <>
               <Link to="/">
-                <Button color="inherit" className="home" sx={{ fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', textDecoration: 'none' }}>Home</Button>
+                <Button color="inherit" className="home" sx={{ fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', textDecoration: 'none' }}>Feed</Button>
               </Link>
               <Link to="/usercards">
-                <Button color="inherit" className="profile" sx={{ fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', textDecoration: 'none' }}>My Cards</Button>
+                <Button color="inherit" className="profile" sx={{ fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', textDecoration: 'none' }}>Profile</Button>
               </Link>
               <Link to="/addcard">
                 <Button color="inherit" className="make" sx={{ fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', textDecoration: 'none' }}>Make a Card</Button>
