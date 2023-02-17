@@ -7,9 +7,9 @@ Lousy Cards is a full-stack web application designed to allow users to create an
 * Add personal messages and images to cards
 * Interact with other users by favoriting and commenting on their cards
 
-# Deployed Application
+# Spoken Demo
 
-### Coming soon!
+[![Watch the video](https://img.youtube.com/vi/WJSkxcAHVlo/maxresdefault.jpg)](https://youtu.be/WJSkxcAHVlo)
 
 # Requirements
 * Node.js and NPM installed
