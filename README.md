@@ -11,34 +11,6 @@ Lousy Cards is a full-stack web application designed to allow users to create an
 
 [![Watch the video](https://img.youtube.com/vi/WJSkxcAHVlo/maxresdefault.jpg)](https://youtu.be/WJSkxcAHVlo)
 
-# Requirements
-* Node.js and NPM installed
-* .NET Core SDK 3.1 or later
-# Installation
-To install and run the Card Maker application, follow these steps:
-
-### 1. Clone the repository to your local machine using the following command:
-
-```git clone git@github.com:RDollish/Cards-Fullstack-Capstone.git```
-
-### 2. Navigate to the client directory and install the required packages using the following command:
-
-```npm install```
-### 3. Navigate to the server directory and install the required packages using the following command:
-
-```dotnet restore```
-
-### 4. Run the following command to start the frontend of the application:
-
-```npm start```
-
-### 5. Open another terminal window and navigate to the server directory. Run the following command to start the backend of the application:
-
-```dotnet run```
-
-### 6. Open your web browser and navigate to http://localhost:3000 to access the application.
-
-
 # Libraries and Technologies Used
 * React
 * Material-UI
