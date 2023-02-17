@@ -9,6 +9,8 @@ Lousy Cards is a full-stack web application designed to allow users to create an
 
 # Spoken Demo
 
+### Click the photo below!
+
 [![Watch the video](https://img.youtube.com/vi/WJSkxcAHVlo/maxresdefault.jpg)](https://youtu.be/WJSkxcAHVlo)
 
 # Libraries and Technologies Used
